@@ -16,6 +16,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.bloodbank3.R;
+import com.example.bloodbank3.models.AppointmentData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -53,8 +54,6 @@ public class BookAppointmentActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         fdb = FirebaseDatabase.getInstance();
         db_ref = fdb.getReference("appointments");
-
-
 
         appointmentDate = findViewById(R.id.appointment_date);
         appointmentTime = findViewById(R.id.appointment_time);
@@ -112,56 +111,62 @@ public class BookAppointmentActivity extends AppCompatActivity {
         appointmentBookBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Fetch user's id from the User data reference in Firebase
-                final Query findUid = fdb.getReference("users").child(uid);
-                final Query findName = fdb.getReference("users").child("Name");
+
+                //Storing user's input for date and time into variables
                 final String ApptDate = appointmentDate.getText().toString();
                 final String ApptTime = appointmentTime.getText().toString();
-                Log.d("BookAppointment","*****User id: "+((DatabaseReference) findUid).getKey());
 
+                //Validation on user's input for date
                 if (appointmentDate.getText().length() == 0){
                     Toast.makeText(getApplicationContext(), "Please pick a date", Toast.LENGTH_LONG).show();
                 }
+                //Validation on user's input for time
                 else if (appointmentTime.getText().length() == 0){
                     Toast.makeText(getApplicationContext(), "Please pick a time", Toast.LENGTH_LONG).show();
                 }
+                //Store the appointment date and time in firebase under appointments node
                 else {
-                    db_ref.child(uid).push().child("Date").setValue(ApptDate);
-                    final Query userQuery = db_ref.orderByChild("Date");
+                    AppointmentData appointmentData = new AppointmentData();
+                    appointmentData.setUserId(uid);
+                    appointmentData.setDate(ApptDate);
+                    appointmentData.setTime(ApptTime);
+                    DatabaseReference newRef = db_ref.push();
 
-                    userQuery.addChildEventListener(new ChildEventListener() {
-                        @Override
-                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                            String myParentNode = dataSnapshot.getKey();
-                            for (DataSnapshot child: dataSnapshot.getChildren()){
-                                String key = child.getKey().toString();
-                                String value = child.getValue().toString();
-                                Log.d("BookAppointmentActivity","*****key = "+key);
-                                Log.d("BookAppointmentActivity","*****value = "+value);
-                                db_ref.child(uid).child(key).child("Time").setValue(ApptTime);
-                            }
-                        }
+                    newRef.setValue(appointmentData);
 
-                        @Override
-                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                        }
-
-                        @Override
-                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
+//                    userQuery.addChildEventListener(new ChildEventListener() {
+//                        @Override
+//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//                            String myParentNode = dataSnapshot.getKey();
+//                            for (DataSnapshot child: dataSnapshot.getChildren()){
+//                                String key = child.getKey().toString();
+//                                String value = child.getValue().toString();
+//                                Log.d("BookAppointmentActivity","*****key = "+key);
+//                                Log.d("BookAppointmentActivity","*****value = "+value);
+//                                db_ref.child(uid).child(key).child("Time").setValue(ApptTime);
+//                            }
+//                        }
+//
+//                        @Override
+//                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
+//
+//                        }
+//
+//                        @Override
+//                        public void onCancelled(@NonNull DatabaseError databaseError) {
+//
+//                        }
+//                    });
                 }
             }
         });
