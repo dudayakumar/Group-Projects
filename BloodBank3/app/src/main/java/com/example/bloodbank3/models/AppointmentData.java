@@ -2,7 +2,7 @@ package com.example.bloodbank3.models;
 
 public class AppointmentData {
 
-    private String date,time,userId;
+    private String date,time,userId,appointmentStatus;
 
     public String getUserId() { return userId; }
 
@@ -24,6 +24,12 @@ public class AppointmentData {
         this.time = time;
     }
 
+    public String getAppointmentStatus() {
+        return appointmentStatus;
+    }
+
+    public void setAppointmentStatus(String appointmentStatus) { this.appointmentStatus = appointmentStatus; }
+
     public AppointmentData(String date, String time) {
         this.date = date;
         this.time = time;
@@ -33,6 +39,13 @@ public class AppointmentData {
         this.date = date;
         this.time = time;
         this.userId = userId;
+    }
+
+    public AppointmentData(String date, String time, String userId, String appointmentStatus) {
+        this.date = date;
+        this.time = time;
+        this.userId = userId;
+        this.appointmentStatus = appointmentStatus;
     }
 
     public AppointmentData() {

@@ -16,20 +16,14 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.bloodbank3.R;
+import com.example.bloodbank3.fragments.HomeFragment;
 import com.example.bloodbank3.models.AppointmentData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 public class BookAppointmentActivity extends AppCompatActivity {
 
@@ -124,49 +118,18 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 else if (appointmentTime.getText().length() == 0){
                     Toast.makeText(getApplicationContext(), "Please pick a time", Toast.LENGTH_LONG).show();
                 }
-                //Store the appointment date and time in firebase under appointments node
+                //Store the appointment date and time in Firebase under appointments node
                 else {
                     AppointmentData appointmentData = new AppointmentData();
                     appointmentData.setUserId(uid);
                     appointmentData.setDate(ApptDate);
                     appointmentData.setTime(ApptTime);
+                    appointmentData.setAppointmentStatus("Pending");
                     DatabaseReference newRef = db_ref.push();
 
                     newRef.setValue(appointmentData);
-
-//                    userQuery.addChildEventListener(new ChildEventListener() {
-//                        @Override
-//                        public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//                            String myParentNode = dataSnapshot.getKey();
-//                            for (DataSnapshot child: dataSnapshot.getChildren()){
-//                                String key = child.getKey().toString();
-//                                String value = child.getValue().toString();
-//                                Log.d("BookAppointmentActivity","*****key = "+key);
-//                                Log.d("BookAppointmentActivity","*****value = "+value);
-//                                db_ref.child(uid).child(key).child("Time").setValue(ApptTime);
-//                            }
-//                        }
-//
-//                        @Override
-//                        public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-//
-//                        }
-//
-//                        @Override
-//                        public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//                        }
-//                    });
+                    Toast.makeText(getApplicationContext(), "Appointment has been booked successfully!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(BookAppointmentActivity.this, DashboardActivity.class));
                 }
             }
         });

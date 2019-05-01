@@ -70,7 +70,11 @@ public class HomeFragment extends Fragment {
         apptData.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         apptData.setAdapter(appointmentDataAdapter);
 
-        AddAppointments();
+//        if(!mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com")){
+//            view.setVisibility(View.GONE);
+//        }
+//        else
+            AddAppointments();
         return view;
     }
 
@@ -82,9 +86,20 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
-                        AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
-                        appointmentDataList.add(appointmentData);
-                        appointmentDataAdapter.notifyDataSetChanged();
+                        Log.d("HomeFragment", "*****mAuth.getCurrentUser().getUid(): "+mAuth.getCurrentUser().getUid());
+                        Log.d("HomeFragment", "*****db_ref.child(users).child(mAuth.getCurrentUser().getUid(): "+db_ref.child("users").child(mAuth.getCurrentUser().getUid()).getKey());
+                        Log.d("HomeFragment", "*****singleAppt.getKey(): "+singleAppt.getKey());
+                        Log.d("HomeFragment", "*****singleAppt.getValue: "+singleAppt.getValue(AppointmentData.class));
+                        Log.d("HomeFragment", "*****db_ref.child(appointments).child(singleAppt.getKey()).toString(): "+db_ref.child("appointments").child(singleAppt.getKey()).getKey());
+                        Log.d("HomeFragment", "*****db_ref.child(appointments.child(userId).getKey(): "+db_ref.child("appointments").child("userId"));
+
+//                        if(mAuth.getCurrentUser().getUid() == db_ref.child("users").child(mAuth.getCurrentUser().getUid()).getKey()){
+//                        if (db_ref.child("appointments").child(singleAppt.getKey()).getKey().equals("-LdkxNLi5DHpbpn3WZ6Q")){
+                        //if (db_ref.child("appointments").child("userId").equals("5PmCSZAMAoT7ZKHGYHn1O0acKFI3")){
+                            AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
+                            appointmentDataList.add(appointmentData);
+                            appointmentDataAdapter.notifyDataSetChanged();
+                        //}
                     }
                     pd.dismiss();
                 } else {

@@ -56,6 +56,14 @@
         <item>Wisconsin</item>
     </string-array>
 
+    <string-array name="appt_status_list">
+        <item>Pending</item>
+        <item>Approved</item>
+        <item>Rejected</item>
+        <item>Cancelled</item>
+    </string-array>
+
     <string name="admin_email">admin@gmail.com</string>
+    <string name="title_activity_maps">Map</string>
 
 </resources>

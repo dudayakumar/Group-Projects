@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.bloodbank3.R;
@@ -20,24 +21,22 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
 
     public class AppointmentHolder extends RecyclerView.ViewHolder{
 
-    TextView apptDate, apptTime;
+    TextView apptDate, apptTime, userId, appointmentId, appointmentStatus;
 
         public AppointmentHolder(@NonNull View itemView) {
             super(itemView);
 
+            appointmentId = itemView.findViewById(R.id.appointmentid);
+            userId = itemView.findViewById(R.id.userid);
             apptDate = itemView.findViewById(R.id.appointmentdate);
             apptTime = itemView.findViewById(R.id.appointmenttime);
+            appointmentStatus = itemView.findViewById(R.id.appointmentstatus);
         }
     }
 
     public AppointmentDataAdapter(List<AppointmentData> apptLists) {
         this.apptLists = apptLists;
     }
-
-//    public AppointmentDataAdapter(Context context, List<AppointmentData> apptLists) {
-//        this.context = context;
-//        this.apptLists = apptLists;
-//    }
 
     @Override
     public AppointmentHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
@@ -51,10 +50,15 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
     public void onBindViewHolder(@NonNull AppointmentHolder appointmentHolder, int i) {
 
         AppointmentData appointmentData = apptLists.get(i);
+        appointmentHolder.userId.setText("User Id:"+appointmentData.getUserId());
         appointmentHolder.apptDate.setText("Date: "+appointmentData.getDate());
         appointmentHolder.apptTime.setText("Time: "+appointmentData.getTime());
+        appointmentHolder.appointmentStatus.setText("Status: "+appointmentData.getAppointmentStatus());
+
+        Log.d("AppointmentDataAdapter","*****User Id = "+appointmentData.getUserId());
         Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
         Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
+        Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
     }
 
     @Override
@@ -62,56 +66,3 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
         return apptLists.size();
     }
 }
-
-
-//public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.MyViewHolder>{
-//
-//    List<AppointmentData> appointmentDataList;
-//    Context context;
-//
-//    public AppointmentDataAdapter(List<AppointmentData> appointmentDataList, Context context) {
-//        this.appointmentDataList = appointmentDataList;
-//        this.context = context;
-//    }
-//
-//    @NonNull
-//    @Override
-//    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-//        View view = LayoutInflater.from(context).inflate(R.layout.appointment_list_item,viewGroup,false);
-//        MyViewHolder myViewHolder = new MyViewHolder(view);
-//        return myViewHolder;
-//    }
-//
-//    @Override
-//    public void onBindViewHolder(@NonNull MyViewHolder myViewHolder, int i) {
-//            AppointmentData appointmentList = appointmentDataList.get(i);
-//            myViewHolder.apptdate.setText(appointmentList.getDate());
-//            myViewHolder.appttime.setText(appointmentList.getTime());
-//    }
-//
-//    @Override
-//    public int getItemCount() {
-//        int arr = 0;
-//        try{
-//            if(appointmentDataList.size() == 0 )
-//                arr=0;
-//            else
-//                arr=appointmentDataList.size();
-//        }
-//        catch (Exception e){
-//                Log.d("Exception","Exception"+e);
-//        }
-//        return arr;
-//    }
-//
-//    public class MyViewHolder extends RecyclerView.ViewHolder{
-//
-//        TextView apptdate,appttime;
-//
-//        public MyViewHolder(@NonNull View itemView) {
-//            super(itemView);
-//            apptdate = itemView.findViewById(R.id.appointment_date);
-//            appttime = itemView.findViewById(R.id.appointment_time);
-//        }
-//    }
-//}
