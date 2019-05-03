@@ -71,7 +71,14 @@ public class HomeFragment extends Fragment {
         apptData.setLayoutManager(apptLayout);
         apptData.setItemAnimator(new DefaultItemAnimator());
         apptData.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-        apptData.setAdapter(appointmentDataAdapter);
+//        apptData.setAdapter(appointmentDataAdapter);
+
+        apptData.setAdapter(new AppointmentDataAdapter(appointmentDataList, new AppointmentDataAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(AppointmentData item) {
+                Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
+            }
+        }));
 
         AddAppointments();
         return view;

@@ -20,9 +20,22 @@ import java.util.List;
 
 public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.AppointmentHolder> {
 
+    //new*****
+    public interface OnItemClickListener {
+        void onItemClick(AppointmentData item);
+    }
+    private OnItemClickListener listener;
+    //*****new
+
     private List<AppointmentData> apptLists;
     private LinearLayout ll;
-    private ClickListener clickListener = null;
+
+    //new*****
+    public AppointmentDataAdapter(List<AppointmentData> items, OnItemClickListener listener){
+        this.apptLists = items;
+        this.listener = listener;
+    }
+    //*****new
 
     public class AppointmentHolder extends RecyclerView.ViewHolder {
 
@@ -36,25 +49,18 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             apptDate = itemView.findViewById(R.id.appointmentdate);
             apptTime = itemView.findViewById(R.id.appointmenttime);
             appointmentStatus = itemView.findViewById(R.id.appointmentstatus);
-
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Toast.makeText(v.getContext(), "clicked!", Toast.LENGTH_LONG).show();
-//                    navigateToAppointmentAction();
-//                }
-//            });
         }
 
-//        private void navigateToAppointmentAction(){
-//            Intent i = new Intent(itemView.getContext(), AppointmentActionsActivity.class);
-//            itemView.star
-//        }
+        public void bind(final AppointmentData item, final OnItemClickListener listener){
+            apptDate.setText(item.getDate());
 
-    }
-
-    public void setClickListener(ClickListener clicklistener){
-        this.clickListener = clicklistener;
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onItemClick(item);
+                }
+            });
+        }
     }
 
     public AppointmentDataAdapter(List<AppointmentData> apptLists) {
@@ -83,11 +89,25 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
         Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
         Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
 
-
+        appointmentHolder.bind(apptLists.get(i), listener);
     }
 
     @Override
     public int getItemCount() {
         return apptLists.size();
     }
+
+
+    //new***************
+//    @Override
+//    public  void onBindViewHolder(ViewHolder holder, int position){
+//        holder.bind(apptLists.get(position), listener);
+//    }
+//
+//    static class ViewHolder extends RecyclerView.ViewHolder{
+//
+//        public ViewHolder(@NonNull View itemView) {
+//            super(itemView);
+//        }
+//    }
 }
