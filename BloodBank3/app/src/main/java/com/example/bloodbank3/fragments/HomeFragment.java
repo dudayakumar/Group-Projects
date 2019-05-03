@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.adapters.AppointmentDataAdapter;
 import com.example.bloodbank3.models.AppointmentData;
+import com.example.bloodbank3.models.UserData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment {
     private AppointmentDataAdapter appointmentDataAdapter;
     private List<AppointmentData> appointmentDataList;
     private ProgressDialog pd;
+    private CardView card;
 
     public HomeFragment() {
     }
@@ -49,7 +52,7 @@ public class HomeFragment extends Fragment {
 
         view = inflater.inflate(R.layout.content_dashboard, container, false);
         apptData = (RecyclerView) view.findViewById(R.id.recyclerView);
-
+        card = view.findViewById(R.id.cardview);
         apptData.setLayoutManager(new LinearLayoutManager(getContext()));
 
         db_ref = FirebaseDatabase.getInstance().getReference();
@@ -70,11 +73,7 @@ public class HomeFragment extends Fragment {
         apptData.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
         apptData.setAdapter(appointmentDataAdapter);
 
-//        if(!mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com")){
-//            view.setVisibility(View.GONE);
-//        }
-//        else
-            AddAppointments();
+        AddAppointments();
         return view;
     }
 
@@ -86,20 +85,12 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
-                        Log.d("HomeFragment", "*****mAuth.getCurrentUser().getUid(): "+mAuth.getCurrentUser().getUid());
-                        Log.d("HomeFragment", "*****db_ref.child(users).child(mAuth.getCurrentUser().getUid(): "+db_ref.child("users").child(mAuth.getCurrentUser().getUid()).getKey());
-                        Log.d("HomeFragment", "*****singleAppt.getKey(): "+singleAppt.getKey());
-                        Log.d("HomeFragment", "*****singleAppt.getValue: "+singleAppt.getValue(AppointmentData.class));
-                        Log.d("HomeFragment", "*****db_ref.child(appointments).child(singleAppt.getKey()).toString(): "+db_ref.child("appointments").child(singleAppt.getKey()).getKey());
-                        Log.d("HomeFragment", "*****db_ref.child(appointments.child(userId).getKey(): "+db_ref.child("appointments").child("userId"));
+                        AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
 
-//                        if(mAuth.getCurrentUser().getUid() == db_ref.child("users").child(mAuth.getCurrentUser().getUid()).getKey()){
-//                        if (db_ref.child("appointments").child(singleAppt.getKey()).getKey().equals("-LdkxNLi5DHpbpn3WZ6Q")){
-                        //if (db_ref.child("appointments").child("userId").equals("5PmCSZAMAoT7ZKHGYHn1O0acKFI3")){
-                            AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
-                            appointmentDataList.add(appointmentData);
-                            appointmentDataAdapter.notifyDataSetChanged();
-                        //}
+                        //Filtering appointments display for logged in user and showing all appts for admin
+                        if(appointmentData.getUserId().equals(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com"))
+                                appointmentDataList.add(appointmentData);
+                        appointmentDataAdapter.notifyDataSetChanged();
                     }
                     pd.dismiss();
                 } else {
@@ -114,4 +105,6 @@ public class HomeFragment extends Fragment {
             }
         });
     }
+
+
 }

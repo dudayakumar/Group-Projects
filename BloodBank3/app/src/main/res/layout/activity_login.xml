@@ -45,7 +45,6 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:textColor="@android:color/white"
             android:text="@string/register" />
 
         <Button
@@ -54,7 +53,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:textColor="@android:color/white"
             android:text="@string/forgot_password" />
 
     </LinearLayout>

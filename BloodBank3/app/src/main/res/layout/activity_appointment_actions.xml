@@ -1,42 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/cardview">
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/innerLinearLayout"
         android:clickable="true"
-        android:id="@+id/linear"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointmentid"/>
+            android:id="@+id/appointment_id"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/userid"/>
+            android:id="@+id/user_id"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointmentdate"/>
+            android:id="@+id/appointment_date"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointmenttime"/>
+            android:id="@+id/appointment_time"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointmentstatus"/>
+            android:id="@+id/appointment_status"/>
 
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/statusBtn"
+        android:text="Update Status"/>
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rescheduleBtn"
+        android:text="Reschedule Appointment"/>
+
+</LinearLayout>

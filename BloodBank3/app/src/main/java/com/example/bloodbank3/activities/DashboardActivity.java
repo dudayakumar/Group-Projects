@@ -12,7 +12,6 @@ import android.view.MenuItem;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.fragments.AboutUsFragment;
-import com.example.bloodbank3.fragments.ContactUsFragment;
 import com.example.bloodbank3.fragments.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -94,7 +93,7 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
                     case R.id.contactUs:
                         Log.d("DashBoardActivity","*****Navigating to contact us");
-                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ContactUsFragment()).commit();
+                        //getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ContactUsFragment()).commit();
                         break;
                     case R.id.logout:
                         mAuth.signOut();

@@ -1,16 +1,19 @@
 package com.example.bloodbank3.adapters;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bloodbank3.R;
+import com.example.bloodbank3.activities.AppointmentActionsActivity;
+import com.example.bloodbank3.interfaces.ClickListener;
 import com.example.bloodbank3.models.AppointmentData;
 
 import java.util.List;
@@ -18,12 +21,14 @@ import java.util.List;
 public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.AppointmentHolder> {
 
     private List<AppointmentData> apptLists;
+    private LinearLayout ll;
+    private ClickListener clickListener = null;
 
-    public class AppointmentHolder extends RecyclerView.ViewHolder{
+    public class AppointmentHolder extends RecyclerView.ViewHolder {
 
     TextView apptDate, apptTime, userId, appointmentId, appointmentStatus;
 
-        public AppointmentHolder(@NonNull View itemView) {
+        public AppointmentHolder(@NonNull final View itemView) {
             super(itemView);
 
             appointmentId = itemView.findViewById(R.id.appointmentid);
@@ -31,7 +36,23 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             apptDate = itemView.findViewById(R.id.appointmentdate);
             apptTime = itemView.findViewById(R.id.appointmenttime);
             appointmentStatus = itemView.findViewById(R.id.appointmentstatus);
+
+//            ll = itemView.findViewById(R.id.linear);
+//            ll.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(itemView.getContext(),"Position"+Integer.toString(getPosition()),Toast.LENGTH_LONG).show();
+////                    clickListener.itemClicked(v,getAdapterPosition());
+//
+//                }
+//            });
+
         }
+
+    }
+
+    public void setClickListener(ClickListener clicklistener){
+        this.clickListener = clicklistener;
     }
 
     public AppointmentDataAdapter(List<AppointmentData> apptLists) {
@@ -59,6 +80,8 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
         Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
         Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
         Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
+
+
     }
 
     @Override

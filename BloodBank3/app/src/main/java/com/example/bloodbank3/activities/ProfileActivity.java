@@ -136,6 +136,7 @@ public class ProfileActivity extends AppCompatActivity {
                                         Log.d("*****error", task.getException().getMessage());
                                     } else {
                                         String id = mAuth.getCurrentUser().getUid();
+                                        db_ref.child(id).child("Email").setValue(email);
                                         db_ref.child(id).child("Name").setValue(Name);
                                         db_ref.child(id).child("Gender").setValue(gender);
                                         db_ref.child(id).child("Contact").setValue(contact);
