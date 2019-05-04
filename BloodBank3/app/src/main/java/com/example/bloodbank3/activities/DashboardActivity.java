@@ -12,6 +12,8 @@ import android.view.MenuItem;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.fragments.AboutUsFragment;
+import com.example.bloodbank3.fragments.ContactUsFragment;
+import com.example.bloodbank3.fragments.FindDonorFragment;
 import com.example.bloodbank3.fragments.HomeFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -84,8 +86,9 @@ public class DashboardActivity extends AppCompatActivity {
                         Log.d("DashBoardActivity","*****Navigating to book an appointment");
                         startActivity(new Intent(getApplicationContext(), BookAppointmentActivity.class));
                         break;
-                    case R.id.nearby_hospital:
-                        Log.d("DashBoardActivity","*****Navigating to nearby hospital");
+                    case R.id.find_donor:
+                        Log.d("DashBoardActivity","*****Navigating to find donors");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new FindDonorFragment()).commit();
                         break;
                     case R.id.aboutUs:
                         Log.d("DashBoardActivity","*****Navigating to about us");
@@ -93,7 +96,7 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
                     case R.id.contactUs:
                         Log.d("DashBoardActivity","*****Navigating to contact us");
-                        //getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ContactUsFragment()).commit();
+                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ContactUsFragment()).commit();
                         break;
                     case R.id.logout:
                         mAuth.signOut();

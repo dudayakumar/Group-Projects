@@ -73,9 +73,14 @@ public class HomeFragment extends Fragment {
         apptData.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
 //        apptData.setAdapter(appointmentDataAdapter);
 
+        Log.d("HomeFragment", "******Before set adapter ");
+
         apptData.setAdapter(new AppointmentDataAdapter(appointmentDataList, new AppointmentDataAdapter.OnItemClickListener() {
+
             @Override
             public void onItemClick(AppointmentData item) {
+                Log.d("HomeFragment", "******Inside set adapter onItemClick method ");
+
                 Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
             }
         }));

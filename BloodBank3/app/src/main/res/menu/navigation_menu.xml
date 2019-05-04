@@ -11,8 +11,8 @@
         android:id="@+id/bookAppt"
         android:title="@string/bookAppt" />
     <item
-        android:id="@+id/nearby_hospital"
-        android:title="@string/find_near_hosp" />
+        android:id="@+id/find_donor"
+        android:title="@string/find_donor" />
     <item
         android:id="@+id/aboutUs"
         android:title="@string/aboutUs" />
