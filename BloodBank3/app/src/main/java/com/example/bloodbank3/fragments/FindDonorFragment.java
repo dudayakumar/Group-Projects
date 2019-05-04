@@ -3,7 +3,6 @@ package com.example.bloodbank3.fragments;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,19 +13,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.models.UserData;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +33,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.IOException;
-import java.nio.DoubleBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -133,48 +128,45 @@ public class FindDonorFragment extends Fragment {
                 mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
                     @Override
                     public void onMapLoaded() {
+                        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-//                        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//                        Log.d("FindDonorFragment", "*****inside setOnMapLoadedCallback userDisplayMap = "+userDisplayMap);
-//
-//                        //Iterating through the userDetail HashMap to fetch latitude, longitude, user's name and blood group to display on the map
-//                        for(List<String> userDetail: userDisplayMap.values()){
-//                            map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(userDetail.get(2)), Double.parseDouble(userDetail.get(3)))).title("Name: "+userDetail.get(0)).snippet("Blood Group: "+userDetail.get(1)));
-//                        }
-//                        //Setting map center
-//                        CameraPosition cPos = CameraPosition.builder().target(new LatLng(41.836038, -87.626544)).zoom(13).bearing(0).tilt(0).build();
-//                        map.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
+                        //Setting initial map center
+                        CameraPosition cPos = CameraPosition.builder().target(new LatLng(41.836038, -87.626544)).zoom(13).bearing(0).tilt(0).build();
+                        map.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
 
                         findDonorBtn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
                                 Log.d("FindDonorFragment", "*****inside setOnMapLoadedCallback userDisplayMap = "+userDisplayMap);
 
-                                //Iterating through the userDetail HashMap to fetch latitude, longitude, user's name and blood group to display on the map
-                                Log.d("FindDonorFragment", "*****zipCode.getText() = "+zipCode.getText());
-                                for(List<String> userDetail: userDisplayMap.values()){
-                                    Log.d("FindDonorFragment", "*****userDetail.get(4) = "+userDetail.get(3));
-                                    if(userDetail.get(4).contains(zipCode.getText()))
-                                        map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(userDetail.get(2)), Double.parseDouble(userDetail.get(3)))).title("Name: "+userDetail.get(0)).snippet("Blood Group: "+userDetail.get(1)));
+                                if(!zipCode.getText().toString().isEmpty()) {
+                                    //Setting map center for each button click, based on the zip code entered
+                                    LatLng camLL = getLocationFromAddress(getContext(), zipCode.getText().toString());
+                                    CameraPosition cPos = CameraPosition.builder().target(new LatLng(camLL.latitude, camLL.longitude)).zoom(15).bearing(0).tilt(0).build();
+                                    map.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
+
+                                    Boolean zipExists = false;
+                                    //Iterating through the userDetail HashMap to fetch latitude, longitude, user's name and blood group to display on the map
+                                    Log.d("FindDonorFragment", "*****zipCode.getText() = " + zipCode.getText());
+                                    for (List<String> userDetail : userDisplayMap.values()) {
+                                        Log.d("FindDonorFragment", "*****userDetail.get(4) = " + userDetail.get(3));
+                                        if (userDetail.get(4).contains(zipCode.getText())) {
+                                            map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(userDetail.get(2)), Double.parseDouble(userDetail.get(3)))).title("Name: " + userDetail.get(0)).snippet("Blood Group: " + userDetail.get(1)));
+                                            zipExists = true;
+                                        }
+                                    }
+                                    if(!zipExists){
+                                        Toast.makeText(getContext(), "No donors are available within zip code "+zipCode.getText().toString(), Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                                //Setting map center
-                                CameraPosition cPos = CameraPosition.builder().target(new LatLng(41.836038, -87.626544)).zoom(13).bearing(0).tilt(0).build();
-                                map.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
+                                else{
+                                    Toast.makeText(getContext(), "Please enter a zip code!", Toast.LENGTH_LONG).show();
+                                }
                             }
                         });
-
                     }
                 });
-
                 Log.d("FindDonorFragment", "*****inside onMapReady userDisplayMap = "+userDisplayMap);
-                //mMap.addMarker(new MarkerOptions().position(new LatLng(51.8403, -87.6137)).title(userName).snippet(userBloodGrp));
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(41.836038, -87.626544)).title("abc").snippet("B+"));
-//                mMap.addMarker(new MarkerOptions().position(new LatLng(41.883230, -87.632400)).title("def").snippet("A+"));
-//
-//                CameraPosition cPos = CameraPosition.builder().target(new LatLng(41.836038, -87.626544)).zoom(13).bearing(0).tilt(0).build();
-//                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
-
             }
         });
 
@@ -237,13 +229,4 @@ public class FindDonorFragment extends Fragment {
         }
         return userBloodGroup;
     }
-
-//    public void getCurrentLocation(){
-//        Log.d("FindDonorFragment", "*****inside getCurrentLocation");
-//        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-//        mMap.addMarker(new MarkerOptions().position(new LatLng(41.836038, -87.626544)).title("abc").snippet("B+"));
-//        CameraPosition cPos = CameraPosition.builder().target(new LatLng(41.836038, -87.626544)).zoom(13).bearing(0).tilt(0).build();
-//        mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
-//    }
-
 }
