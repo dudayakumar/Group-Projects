@@ -58,7 +58,9 @@ public class DashboardActivity extends AppCompatActivity {
         }
 
         //If logged-in user is a donor
-
+        if(!cur_user.getEmail().equalsIgnoreCase("admin@gmail.com")) {
+            nv.getMenu().findItem(R.id.find_donor).setVisible(false);
+        }
 
         nv.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override

@@ -53,6 +53,7 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.content_dashboard, container, false);
         apptData = (RecyclerView) view.findViewById(R.id.recyclerView);
         card = view.findViewById(R.id.cardview);
+
         apptData.setLayoutManager(new LinearLayoutManager(getContext()));
 
         db_ref = FirebaseDatabase.getInstance().getReference();
@@ -71,38 +72,31 @@ public class HomeFragment extends Fragment {
         apptData.setLayoutManager(apptLayout);
         apptData.setItemAnimator(new DefaultItemAnimator());
         apptData.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
-//        apptData.setAdapter(appointmentDataAdapter);
+        apptData.setAdapter(appointmentDataAdapter);
 
         Log.d("HomeFragment", "******Before set adapter ");
-
-        apptData.setAdapter(new AppointmentDataAdapter(appointmentDataList, new AppointmentDataAdapter.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AppointmentData item) {
-                Log.d("HomeFragment", "******Inside set adapter onItemClick method ");
-
-                Toast.makeText(getContext(), "Item Clicked", Toast.LENGTH_LONG).show();
-            }
-        }));
-
         AddAppointments();
+
         return view;
     }
 
     private void AddAppointments(){
         Query allAppts = db_ref.child("appointments");
         pd.show();
+
         allAppts.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
                 if(dataSnapshot.exists()) {
                     for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
                         AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
 
                         //Filtering appointments display for logged in user and showing all appts for admin
-                        if(appointmentData.getUserId().equals(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com"))
-                                appointmentDataList.add(appointmentData);
-                        appointmentDataAdapter.notifyDataSetChanged();
+                        if(appointmentData.getUserId().equals(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com")) {
+                            appointmentDataList.add(appointmentData);
+                            appointmentDataAdapter.notifyDataSetChanged();
+                        }
                     }
                     pd.dismiss();
                 } else {
@@ -117,6 +111,4 @@ public class HomeFragment extends Fragment {
             }
         });
     }
-
-
 }
