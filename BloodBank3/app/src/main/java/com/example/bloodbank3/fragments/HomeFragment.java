@@ -1,10 +1,15 @@
 package com.example.bloodbank3.fragments;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -17,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.example.bloodbank3.R;
+import com.example.bloodbank3.activities.AppointmentActionsActivity;
 import com.example.bloodbank3.adapters.AppointmentDataAdapter;
 import com.example.bloodbank3.models.AppointmentData;
 import com.example.bloodbank3.models.UserData;
@@ -37,7 +43,7 @@ import java.util.List;
  Created by: Dhivya Udaya Kumar
  ***/
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends Fragment{
 
     private View view;
     private RecyclerView apptData;
@@ -113,5 +119,12 @@ public class HomeFragment extends Fragment {
                 Log.d("HomeFragment", "Error: "+databaseError.getMessage());
             }
         });
+    }
+
+    public void navigateToApptFragment(Context ctx){
+        //Navigation to activity
+        Activity activity = (Activity)ctx;
+        Intent intent = new Intent(ctx, AppointmentActionsActivity.class);
+        activity.startActivity(intent);
     }
 }

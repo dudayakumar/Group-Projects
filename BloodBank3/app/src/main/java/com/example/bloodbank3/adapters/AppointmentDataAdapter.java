@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.activities.AppointmentActionsActivity;
+import com.example.bloodbank3.fragments.HomeFragment;
 import com.example.bloodbank3.models.AppointmentData;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
     }
 
     @Override
-    public AppointmentHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
+    public AppointmentHolder onCreateViewHolder(final ViewGroup viewGroup, int viewtype) {
 
         Log.d("AppointmentDataAdapter","*****Inside onCreateViewHolder");
         View listItem = LayoutInflater.from(viewGroup.getContext())
@@ -74,6 +75,11 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             public void onClick(View v) {
                 Log.d("AppointmentDataAdapter","***** onClick");
                 Toast.makeText(v.getContext(),"Clicked item2", Toast.LENGTH_SHORT).show();
+
+                //Calling method in home fragment class for navigation
+                HomeFragment homeFragment = new HomeFragment();
+                homeFragment.navigateToApptFragment(viewGroup.getContext());
+
             }
 
 

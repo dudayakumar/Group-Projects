@@ -2,13 +2,14 @@ package com.example.bloodbank3.activities;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import com.example.bloodbank3.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -28,6 +29,12 @@ public class RestorePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restore_password);
+
+        //Action bar back button navigation logic
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
+
         email = findViewById(R.id.resetUsingEmail);
         sendPassword = findViewById(R.id.resetPassbtn);
 
@@ -51,21 +58,20 @@ public class RestorePassword extends AppCompatActivity {
         });
 
     }
+
+    //Minimize application on pressing back button
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
+
+    //Navigate to previous activity on pressing action bar's back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }
-
-
-
-
-//import android.os.Bundle;
-//import android.support.v7.app.AppCompatActivity;
-//
-//import com.example.bloodbank3.R;
-//
-//public class RestorePassword extends AppCompatActivity {
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_restore_password);
-//
-//    }
-//}

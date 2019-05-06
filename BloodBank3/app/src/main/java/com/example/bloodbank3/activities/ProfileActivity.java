@@ -4,8 +4,10 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,12 +43,19 @@ public class ProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_profile);
+
+        //Progress dialogue logic
         pd = new ProgressDialog(this);
         pd.setMessage("Loading...");
         pd.setCancelable(true);
         pd.setCanceledOnTouchOutside(false);
         pd.show();
-        setContentView(R.layout.activity_profile);
+
+        //Action bar back button navigation logic
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowHomeEnabled(true);
 
         db_User = FirebaseDatabase.getInstance();
         db_ref = db_User.getReference("users");
@@ -84,36 +93,68 @@ public class ProfileActivity extends AppCompatActivity {
                 final String password = inputpassword.getText().toString();
                 final String confirmpassword = inputretypePassword.getText().toString();
 
-                //Store profile information in database
-                pd.show();
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(ProfileActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(ProfileActivity.this, "Registration failed! Please try again.", Toast.LENGTH_LONG)
-                                            .show();
-                                    Log.d("*****error", task.getException().getMessage());
-                                } else {
-                                    String id = mAuth.getCurrentUser().getUid();
-                                    db_ref.child(id).child("Email").setValue(email);
-                                    db_ref.child(id).child("Name").setValue(Name);
-                                    db_ref.child(id).child("Gender").setValue(gender);
-                                    db_ref.child(id).child("Contact").setValue(contact);
-                                    db_ref.child(id).child("BloodGroup").setValue(bloodgroup);
-                                    db_ref.child(id).child("Address").setValue(address);
-                                    db_ref.child(id).child("Division").setValue(division);
-                                    Toast.makeText(ProfileActivity.this, "Registration successful! Your profile has been created!", Toast.LENGTH_LONG).show();
-                                    Log.d("ProfileActivity", "*****createUserWithEmail:success");
-                                    Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                                    startActivity(intent);
-                                    Log.d("ProfileActivity", "*****Navigating to DashboardActivity");
-                                    finish();
-                                }
-                                pd.dismiss();
-                            }
-                        });
+                //Profile information validations
+                if(!(Name.isEmpty() || contact.isEmpty() || address.isEmpty())) {
+                    if (password.equals(confirmpassword) && !password.isEmpty() && !confirmpassword.isEmpty() && !email.isEmpty()) {
+                        //Store profile information in database
+                        pd.show();
+                        mAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(ProfileActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (!task.isSuccessful()) {
+                                            Toast.makeText(ProfileActivity.this, "Registration failed! Please try again.", Toast.LENGTH_LONG)
+                                                    .show();
+                                            Log.d("*****error", task.getException().getMessage());
+                                        } else {
+                                            String id = mAuth.getCurrentUser().getUid();
+                                            db_ref.child(id).child("Email").setValue(email);
+                                            db_ref.child(id).child("Name").setValue(Name);
+                                            db_ref.child(id).child("Gender").setValue(gender);
+                                            db_ref.child(id).child("Contact").setValue(contact);
+                                            db_ref.child(id).child("BloodGroup").setValue(bloodgroup);
+                                            db_ref.child(id).child("Address").setValue(address);
+                                            db_ref.child(id).child("Division").setValue(division);
+                                            Toast.makeText(ProfileActivity.this, "Registration successful! Your profile has been created!", Toast.LENGTH_LONG).show();
+                                            Log.d("ProfileActivity", "*****createUserWithEmail:success");
+                                            Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+                                            startActivity(intent);
+                                            Log.d("ProfileActivity", "*****Navigating to DashboardActivity");
+                                            finish();
+                                        }
+                                        pd.dismiss();
+                                    }
+                                });
+                    } else {
+                        if (email.isEmpty() && password.isEmpty())
+                            Toast.makeText(ProfileActivity.this, "Please enter Email ID and Password!", Toast.LENGTH_LONG).show();
+                        else if (email.isEmpty())
+                            Toast.makeText(ProfileActivity.this, "Please enter Email ID!", Toast.LENGTH_LONG).show();
+                        else if (password.isEmpty())
+                            Toast.makeText(ProfileActivity.this, "Please enter Password!", Toast.LENGTH_LONG).show();
+                        else if (!password.equals(confirmpassword))
+                            Toast.makeText(ProfileActivity.this, "Please confirm your password!", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(ProfileActivity.this, "Please complete your profile!", Toast.LENGTH_LONG).show();
+                }
             }
         });
+    }
+
+    //Minimize application on pressing back button
+    @Override
+    public void onBackPressed(){
+        this.moveTaskToBack(true);
+    }
+
+    //Navigate to previous activity on pressing action bar's back button
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home: finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
