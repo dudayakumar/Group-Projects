@@ -19,6 +19,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
 
+/***
+ Class Name: DashboardActivity
+ Class Description: Class to set and render navigation menu items on the dashboard
+ Created by: Dhivya Udaya Kumar
+ ***/
+
 public class DashboardActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;

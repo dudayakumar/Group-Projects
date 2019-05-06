@@ -31,6 +31,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
+/***
+ Class Name: HomeFragment
+ Class Description: Class to display Appointment details data within home fragment
+ Created by: Dhivya Udaya Kumar
+ ***/
+
 public class HomeFragment extends Fragment {
 
     private View view;

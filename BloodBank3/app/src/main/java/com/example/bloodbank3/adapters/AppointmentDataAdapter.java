@@ -14,21 +14,31 @@ import android.widget.Toast;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.activities.AppointmentActionsActivity;
-import com.example.bloodbank3.interfaces.ClickListener;
 import com.example.bloodbank3.models.AppointmentData;
 
 import java.util.List;
 
-public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.AppointmentHolder> {
+/***
+ Class Name: AppointmentDataAdapter
+ Class Description: Adapter class to set Appointment details data to render in recycler view
+ Created by: Dhivya Udaya Kumar
+ ***/
+
+public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.AppointmentHolder> implements View.OnClickListener{
 
     Context context;
+
+    @Override
+    public void onClick(View v) {
+     //   Log.d("AppointmentDataAdapter","*****Inside onClick");
+    }
+
     public interface OnItemClickListener {
-        void onItemClick(AppointmentData item);
+        void onItemClick(int pos, View view);
     }
     private OnItemClickListener listener;
 
     private List<AppointmentData> apptLists;
-    private LinearLayout ll;
 
     public AppointmentDataAdapter(List<AppointmentData> apptLists) {
         this.apptLists = apptLists;
@@ -36,9 +46,9 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
 
     public class AppointmentHolder extends RecyclerView.ViewHolder {
 
-    TextView apptDate, apptTime, userId, appointmentId, appointmentStatus;
+    private TextView apptDate, apptTime, userId, appointmentId, appointmentStatus;
 
-        public AppointmentHolder(@NonNull final View itemView) {
+        public AppointmentHolder(@NonNull  View itemView) {
             super(itemView);
             Log.d("AppointmentDataAdapter","*****Inside AppointmentHolder");
             appointmentId = itemView.findViewById(R.id.appointmentid);
@@ -47,33 +57,36 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             apptTime = itemView.findViewById(R.id.appointmenttime);
             appointmentStatus = itemView.findViewById(R.id.appointmentstatus);
         }
-
-        public void bind(final AppointmentData item, final OnItemClickListener listener){
-            apptDate.setText(item.getDate());
-
-            Log.d("AppointmentDataAdapter","*****Inside bind");
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener.onItemClick(item);
-                }
-            });
-        }
     }
 
     @Override
-    public AppointmentHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
+    public AppointmentHolder onCreateViewHolder(ViewGroup viewGroup, int viewtype) {
 
         Log.d("AppointmentDataAdapter","*****Inside onCreateViewHolder");
         View listItem = LayoutInflater.from(viewGroup.getContext())
                 .inflate(R.layout.appointment_list_item, viewGroup, false);
-        return new AppointmentHolder(listItem);
+
+        listItem.setOnClickListener(this);
+        RecyclerView.ViewHolder holder = new AppointmentHolder(listItem);
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Log.d("AppointmentDataAdapter","***** onClick");
+                Toast.makeText(v.getContext(),"Clicked item2", Toast.LENGTH_SHORT).show();
+            }
+
+
+        });
+
+        AppointmentHolder newobj = new AppointmentHolder(listItem);
+        return newobj;
     }
 
     @Override
     public void onBindViewHolder(@NonNull AppointmentHolder appointmentHolder, int i) {
 
-        Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder");
+        Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder "+i);
         AppointmentData appointmentData = apptLists.get(i);
         appointmentHolder.userId.setText("User Id:"+appointmentData.getUserId());
         appointmentHolder.apptDate.setText("Date: "+appointmentData.getDate());
@@ -81,16 +94,25 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
         appointmentHolder.appointmentStatus.setText("Status: "+appointmentData.getAppointmentStatus());
 
         Log.d("AppointmentDataAdapter","*****User Id = "+appointmentData.getUserId());
-        Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
-        Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
-        Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
+      //  Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
+       // Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
+        //Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
 
-        appointmentHolder.bind(apptLists.get(i), listener);
+//        appointmentHolder.bind(apptLists.get(i), listener);
+
+
+
+
+    }
+
+    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
+        this.listener = onItemClickListener;
+        Log.d("AppointmentDataAdapter","setOnItemClickListener");
     }
 
     @Override
     public int getItemCount() {
-        Log.d("AppointmentDataAdapter","*****apptLists.size() = "+apptLists.size());
+       // Log.d("AppointmentDataAdapter","*****apptLists.size() = "+apptLists.size());
         return apptLists.size();
     }
 }
