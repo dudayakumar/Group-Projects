@@ -29,6 +29,12 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
+/***
+ Class Name: BookApppointmentFragment
+ Class Description: Fragment class to enable user to book appointments
+ Created by: Shivangee Kulkarni
+ ***/
+
 public class BookApppointmentFragment extends Fragment {
 
     private View view;

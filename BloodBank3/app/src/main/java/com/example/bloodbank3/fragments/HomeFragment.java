@@ -49,9 +49,6 @@ public class HomeFragment extends Fragment {
     private ProgressDialog pd;
     private CardView card;
 
-    public HomeFragment() {
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

@@ -16,6 +16,7 @@ import com.example.bloodbank3.fragments.BookApppointmentFragment;
 import com.example.bloodbank3.fragments.ContactUsFragment;
 import com.example.bloodbank3.fragments.FindDonorFragment;
 import com.example.bloodbank3.fragments.HomeFragment;
+import com.example.bloodbank3.fragments.ProfileFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -89,11 +90,11 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
                     case R.id.userprofile:
                         Log.d("DashBoardActivity","*****Navigating to user profile");
-                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+//                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ProfileFragment()).commit();
                         break;
                     case R.id.bookAppt:
                         Log.d("DashBoardActivity","*****Navigating to book an appointment");
-//                        startActivity(new Intent(getApplicationContext(), BookAppointmentActivity.class));
                         getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
                         break;
                     case R.id.find_donor:
