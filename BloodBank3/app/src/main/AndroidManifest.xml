@@ -34,9 +34,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyB93v1NaIbhSIvWItFZIBKXFvv6fh6rcXg" />
 
-        <activity
-            android:name=".activities.MapsActivity"
-            android:label="@string/title_activity_maps"></activity>
+        <!--<activity-->
+            <!--android:name=".activities.MapsActivity"-->
+            <!--android:label="@string/title_activity_maps"></activity>-->
         <activity
             android:name=".activities.LoginActivity"
             android:label="@string/sign_in" />
@@ -59,7 +59,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.BookAppointmentActivity" />
+        <!--<activity android:name=".activities.BookAppointmentActivity" />-->
     </application>
 
 </manifest>

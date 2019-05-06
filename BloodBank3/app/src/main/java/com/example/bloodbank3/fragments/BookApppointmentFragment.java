@@ -1,4 +1,5 @@
-package com.example.bloodbank3.activities;
+package com.example.bloodbank3.fragments;
+
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
@@ -6,9 +7,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -16,7 +19,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.example.bloodbank3.R;
-import com.example.bloodbank3.fragments.HomeFragment;
+import com.example.bloodbank3.activities.DashboardActivity;
+import com.example.bloodbank3.activities.LoginActivity;
 import com.example.bloodbank3.models.AppointmentData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -25,8 +29,9 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Calendar;
 
-public class BookAppointmentActivity extends AppCompatActivity {
+public class BookApppointmentFragment extends Fragment {
 
+    private View view;
     private EditText appointmentDate;
     private EditText appointmentTime;
     private DatePickerDialog datePicker;
@@ -37,21 +42,20 @@ public class BookAppointmentActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseDatabase fdb;
 
-    String uid,uemail,aid;
-    String appttime, apptdate;
+    String uid,uemail;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_book_appointment);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        view = inflater.inflate(R.layout.activity_book_appointment, container, false);
 
         mAuth = FirebaseAuth.getInstance();
         fdb = FirebaseDatabase.getInstance();
         db_ref = fdb.getReference("appointments");
 
-        appointmentDate = findViewById(R.id.appointment_date);
-        appointmentTime = findViewById(R.id.appointment_time);
-        appointmentBookBtn = findViewById(R.id.schedule_appointment);
+        appointmentDate = view.findViewById(R.id.appointment_date);
+        appointmentTime = view.findViewById(R.id.appointment_time);
+        appointmentBookBtn = view.findViewById(R.id.schedule_appointment);
 
         appointmentDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +65,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 int month = cal.get(Calendar.MONTH);
                 int year = cal.get(Calendar.YEAR);
 
-                datePicker = new DatePickerDialog(BookAppointmentActivity.this,new DatePickerDialog.OnDateSetListener() {
+                datePicker = new DatePickerDialog(view.getContext(),new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         appointmentDate.setText(day + "/" + (month + 1) + "/" + year);
@@ -78,7 +82,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
                 int hour = cal.get(Calendar.HOUR_OF_DAY);
                 int minute = cal.get(Calendar.MINUTE);
 
-                timePicker = new TimePickerDialog(BookAppointmentActivity.this,new TimePickerDialog.OnTimeSetListener() {
+                timePicker = new TimePickerDialog(view.getContext(),new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         appointmentTime.setText(hourOfDay+":"+minute);
@@ -94,7 +98,7 @@ public class BookAppointmentActivity extends AppCompatActivity {
         if(cur_user == null)
         {
             //Navigate to login page if no user is logged in
-            startActivity(new Intent(BookAppointmentActivity.this, LoginActivity.class));
+            startActivity(new Intent(view.getContext(), LoginActivity.class));
         } else {
             //Else get the user id and store it in uid
             uid = cur_user.getUid();
@@ -112,11 +116,11 @@ public class BookAppointmentActivity extends AppCompatActivity {
 
                 //Validation on user's input for date
                 if (appointmentDate.getText().length() == 0){
-                    Toast.makeText(getApplicationContext(), "Please pick a date", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "Please pick a date", Toast.LENGTH_LONG).show();
                 }
                 //Validation on user's input for time
                 else if (appointmentTime.getText().length() == 0){
-                    Toast.makeText(getApplicationContext(), "Please pick a time", Toast.LENGTH_LONG).show();
+                    Toast.makeText(view.getContext(), "Please pick a time", Toast.LENGTH_LONG).show();
                 }
                 //Store the appointment date and time in Firebase under appointments node
                 else {
@@ -128,10 +132,12 @@ public class BookAppointmentActivity extends AppCompatActivity {
                     DatabaseReference newRef = db_ref.push();
 
                     newRef.setValue(appointmentData);
-                    Toast.makeText(getApplicationContext(), "Appointment has been booked successfully!", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(BookAppointmentActivity.this, DashboardActivity.class));
+                    Toast.makeText(view.getContext(), "Appointment has been booked successfully!", Toast.LENGTH_LONG).show();
+                    startActivity(new Intent(view.getContext(), DashboardActivity.class));
                 }
             }
         });
+
+        return view;
     }
 }

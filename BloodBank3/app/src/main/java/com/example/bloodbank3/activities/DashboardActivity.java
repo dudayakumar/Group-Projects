@@ -12,6 +12,7 @@ import android.view.MenuItem;
 
 import com.example.bloodbank3.R;
 import com.example.bloodbank3.fragments.AboutUsFragment;
+import com.example.bloodbank3.fragments.BookApppointmentFragment;
 import com.example.bloodbank3.fragments.ContactUsFragment;
 import com.example.bloodbank3.fragments.FindDonorFragment;
 import com.example.bloodbank3.fragments.HomeFragment;
@@ -92,7 +93,8 @@ public class DashboardActivity extends AppCompatActivity {
                         break;
                     case R.id.bookAppt:
                         Log.d("DashBoardActivity","*****Navigating to book an appointment");
-                        startActivity(new Intent(getApplicationContext(), BookAppointmentActivity.class));
+//                        startActivity(new Intent(getApplicationContext(), BookAppointmentActivity.class));
+                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
                         break;
                     case R.id.find_donor:
                         Log.d("DashBoardActivity","*****Navigating to find donors");
