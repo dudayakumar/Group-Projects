@@ -131,12 +131,15 @@ public class BookApppointmentFragment extends Fragment {
                 //Store the appointment date and time in Firebase under appointments node
                 else {
                     AppointmentData appointmentData = new AppointmentData();
+
                     appointmentData.setUserId(uid);
                     appointmentData.setDate(ApptDate);
                     appointmentData.setTime(ApptTime);
                     appointmentData.setAppointmentStatus("Pending");
                     DatabaseReference newRef = db_ref.push();
-
+                    String key = newRef.getKey();
+                    Log.d("BookAppointment: ", "*****key: "+key);
+                    appointmentData.setAppointmentId(key);
                     newRef.setValue(appointmentData);
                     Toast.makeText(view.getContext(), "Appointment has been booked successfully!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(view.getContext(), DashboardActivity.class));

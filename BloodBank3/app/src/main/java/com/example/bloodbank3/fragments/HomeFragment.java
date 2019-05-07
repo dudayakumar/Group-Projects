@@ -101,6 +101,11 @@ public class HomeFragment extends Fragment{
                     for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
                         AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
 
+                        Log.d("HomeFragment", "*****singleAppt: "+singleAppt);
+                        Log.d("HomeFragment", "*****singleAppt.getKey(): "+singleAppt.getKey());
+                        Log.d("HomeFragment", "*****singleAppt.getValue(): "+singleAppt.getValue());
+                        Log.d("HomeFragment", "*****appointmentData: "+appointmentData);
+
                         //Filtering appointments display for logged in user and showing all appts for admin
                         if(appointmentData.getUserId().equals(mAuth.getCurrentUser().getUid()) || mAuth.getCurrentUser().getEmail().equalsIgnoreCase("admin@gmail.com")) {
                             appointmentDataList.add(appointmentData);
@@ -121,10 +126,17 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    public void navigateToApptFragment(Context ctx){
+    public void navigateToApptFragment(Context ctx,String userid,String apptDate,String apptTime,String apptId,String status){
         //Navigation to activity
         Activity activity = (Activity)ctx;
         Intent intent = new Intent(ctx, AppointmentActionsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("userid",userid);
+        bundle.putString("appointmentDate",apptDate);
+        bundle.putString("appointmentTime",apptTime);
+        bundle.putString("appointmentId",apptId);
+        bundle.putString("appointmentStatus",status);
+        intent.putExtras(bundle);
         activity.startActivity(intent);
     }
 }

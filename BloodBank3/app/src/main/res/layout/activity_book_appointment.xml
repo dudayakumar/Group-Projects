@@ -11,14 +11,16 @@
         android:layout_height="wrap_content"
         android:hint="@string/appointment_date"
         android:inputType="date"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:gravity="center"/>
 
     <EditText
         android:id="@+id/appointment_time"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="time"
-        android:hint="@string/appointment_time"/>
+        android:hint="@string/appointment_time"
+        android:gravity="center"/>
 
     <Button
         android:layout_width="wrap_content"

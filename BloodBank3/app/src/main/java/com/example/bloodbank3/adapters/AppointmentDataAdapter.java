@@ -17,6 +17,8 @@ import com.example.bloodbank3.activities.AppointmentActionsActivity;
 import com.example.bloodbank3.fragments.HomeFragment;
 import com.example.bloodbank3.models.AppointmentData;
 
+import org.w3c.dom.Text;
+
 import java.util.List;
 
 /***
@@ -77,8 +79,18 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
                 Toast.makeText(v.getContext(),"Clicked item2", Toast.LENGTH_SHORT).show();
 
                 //Calling method in home fragment class for navigation
+                TextView userid = v.findViewById(R.id.userid);
+                TextView apptDate = v.findViewById(R.id.appointmentdate);
+                TextView apptTime = v.findViewById(R.id.appointmenttime);
+                TextView apptId = v.findViewById(R.id.appointmentid);
+                TextView status = v.findViewById(R.id.appointmentstatus);
+
+
+                Log.d("AppointmentDataAdapter","*****apptId: "+apptId.getText().toString());
+                Log.d("AppointmentDataAdapter","*****apptDate: "+apptDate.getText().toString());
+
                 HomeFragment homeFragment = new HomeFragment();
-                homeFragment.navigateToApptFragment(viewGroup.getContext());
+                homeFragment.navigateToApptFragment(viewGroup.getContext(),userid.getText()+"",apptDate.getText()+"",apptTime.getText()+"",apptId.getText()+"",status.getText()+"");
 
             }
 
@@ -94,10 +106,11 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
 
         Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder "+i);
         AppointmentData appointmentData = apptLists.get(i);
-        appointmentHolder.userId.setText("User Id:"+appointmentData.getUserId());
-        appointmentHolder.apptDate.setText("Date: "+appointmentData.getDate());
-        appointmentHolder.apptTime.setText("Time: "+appointmentData.getTime());
-        appointmentHolder.appointmentStatus.setText("Status: "+appointmentData.getAppointmentStatus());
+        appointmentHolder.appointmentId.setText(appointmentData.getAppointmentId());
+        appointmentHolder.userId.setText(appointmentData.getUserId());
+        appointmentHolder.apptDate.setText(appointmentData.getDate());
+        appointmentHolder.apptTime.setText(appointmentData.getTime());
+        appointmentHolder.appointmentStatus.setText(appointmentData.getAppointmentStatus());
 
         Log.d("AppointmentDataAdapter","*****User Id = "+appointmentData.getUserId());
       //  Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
