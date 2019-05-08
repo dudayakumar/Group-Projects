@@ -8,6 +8,7 @@
     android:orientation="vertical"
     tools:context=".activities.SplashActivity">
 
+
     <TextView
         android:layout_marginTop="15dp"
         android:textSize="48sp"
@@ -20,5 +21,10 @@
         android:text="Donate Blood, Save Life"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/splashImg"
+        android:layout_gravity="center"/>
 
 </LinearLayout>

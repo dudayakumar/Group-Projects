@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.InputType;
@@ -129,9 +131,16 @@ public class AppointmentActionsActivity extends AppCompatActivity {
 //                NavigationView nv = (NavigationView)findViewById(R.id.nav_view);
 
                 Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(intent);
+                startActivity(intent); //working
+
+
 //                getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
 //                nv.getMenu().getItem(0).setChecked(true);
+
+
+
+//                FragmentTransaction ft = fm.beginTransaction();
+//                ft.add(R.id.activity_appointment_actions, )
             }
         });
 
