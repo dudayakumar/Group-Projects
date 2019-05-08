@@ -126,11 +126,11 @@ public class AppointmentActionsActivity extends AppCompatActivity {
         rescheduleBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // NavigationView nv = (NavigationView)findViewById(R.id.nav_view);
+//                NavigationView nv = (NavigationView)findViewById(R.id.nav_view);
 
                 Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
                 startActivity(intent);
-                // getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
+//                getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
 //                nv.getMenu().getItem(0).setChecked(true);
             }
         });

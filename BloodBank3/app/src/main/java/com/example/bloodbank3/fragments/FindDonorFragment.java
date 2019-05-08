@@ -3,8 +3,10 @@ package com.example.bloodbank3.fragments;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -56,11 +58,12 @@ public class FindDonorFragment extends Fragment{
     String userId = null;
     String userName = null;
     String userBloodGrp = null;
+    String userContactNo = null;
     int userBG = 0;
 
     Map<String, List<String>> userDisplayMap = new HashMap<>();
 
-
+    private String userContactNumber = null;
 
 
     AlertDialog.Builder builder;
@@ -100,6 +103,7 @@ public class FindDonorFragment extends Fragment{
                         userBG = userData.getBloodGroup();
                         userName = userData.getName();
                         userBloodGrp = fetchBloodGroup(userBG);
+                        userContactNo = userData.getContact();
                         latLng = getLocationFromAddress(getContext(), userAddress);
                         Log.d("FindDonorFragment", "*****"+userAddress+": LatLng = "+latLng);
 
@@ -109,6 +113,7 @@ public class FindDonorFragment extends Fragment{
                         userDetailsList.add(Double.toString(latLng.latitude));
                         userDetailsList.add(Double.toString(latLng.longitude));
                         userDetailsList.add(userAddress);
+                        userDetailsList.add(userContactNo);
 
                         Log.d("FindDonorFragment", "*****userDetailsList = "+userDetailsList);
 
@@ -155,66 +160,50 @@ public class FindDonorFragment extends Fragment{
                                     map.moveCamera(CameraUpdateFactory.newCameraPosition(cPos));
 
                                     Boolean zipExists = false;
+
                                     //Iterating through the userDetail HashMap to fetch latitude, longitude, user's name and blood group to display on the map
                                     Log.d("FindDonorFragment", "*****zipCode.getText() = " + zipCode.getText());
                                     for (List<String> userDetail : userDisplayMap.values()) {
                                         Log.d("FindDonorFragment", "*****userDetail.get(4) = " + userDetail.get(3));
                                         if (userDetail.get(4).contains(zipCode.getText())) {
-                                            map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(userDetail.get(2)), Double.parseDouble(userDetail.get(3)))).title("Name: " + userDetail.get(0)).snippet("Blood Group: " + userDetail.get(1)));
+                                            map.addMarker(new MarkerOptions().position(new LatLng(Double.parseDouble(userDetail.get(2)), Double.parseDouble(userDetail.get(3)))).title(userDetail.get(0) + ", " + userDetail.get(1)).snippet(userDetail.get(5)));
                                             zipExists = true;
+                                            userContactNumber = userDetail.get(5);
                                         }
-
-                                        //Method to recognize that a marker has been clicked and pop-up an alert box to send message to user
-                                        map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-                                            @Override
-                                            public boolean onMarkerClick(Marker marker) {
-                                                Toast.makeText(getContext(), "Clicked marker!", Toast.LENGTH_LONG).show();
-
-                                                builder = new AlertDialog.Builder(getContext());
-                                                final EditText msgInput = new EditText(getContext());
-                                                msgInput.setInputType(InputType.TYPE_CLASS_TEXT);
-                                                builder.setView(msgInput);
-
-                                                builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-                                                    @Override
-                                                    public void onClick(DialogInterface dialog, int which) {
-                                                        Toast.makeText(getContext(), "Clicked send!", Toast.LENGTH_LONG).show();
-                                                    }
-                                                });
-                                                builder.show();
-
-                                                return false;
-                                            }
-                                        });
-
                                     }
                                     if(!zipExists){
                                         Toast.makeText(getContext(), "No donors are available within zip code "+zipCode.getText().toString(), Toast.LENGTH_LONG).show();
                                     }
 
+                                    //Method to recognize that a marker has been clicked and pop-up an alert box to send message to user
+                                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+                                        @Override
+                                        public boolean onMarkerClick(Marker marker) {
+                                            Toast.makeText(getContext(), "Clicked marker!", Toast.LENGTH_LONG).show();
 
-//                                    //Method to recognize that a marker has been clicked and pop-up an alert box to send message to user
-//                                    map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-//                                        @Override
-//                                        public boolean onMarkerClick(Marker marker) {
-//                                            Toast.makeText(getContext(), "Clicked marker!", Toast.LENGTH_LONG).show();
-//
-//                                            builder = new AlertDialog.Builder(getContext());
-//                                            final EditText msgInput = new EditText(getContext());
-//                                            msgInput.setInputType(InputType.TYPE_CLASS_TEXT);
-//                                            builder.setView(msgInput);
-//
-//                                            builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
-//                                                @Override
-//                                                public void onClick(DialogInterface dialog, int which) {
-//                                                    Toast.makeText(getContext(), "Clicked send!", Toast.LENGTH_LONG).show();
-//                                                }
-//                                            });
-//                                            builder.show();
-//
-//                                            return false;
-//                                        }
-//                                    });
+                                            //Fetching selected user's contact number through snippet
+                                            final String contact = marker.getSnippet();
+                                            builder = new AlertDialog.Builder(getContext());
+
+                                            builder.setMessage("Would you like to send a message to the donor?")
+                                                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                                        @Override
+                                                        public void onClick(DialogInterface dialog, int which) {
+                                                            //Navigating to standard sms app on phone to send message to the user
+                                                            Toast.makeText(getContext(), "Type a message for the user...", Toast.LENGTH_LONG).show();
+                                                            startActivity(new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", contact, null)));
+                                                        }
+                                                    }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    Toast.makeText(getContext(), "No message sent!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            });
+                                            builder.show();
+
+                                            return false;
+                                        }
+                                    });
 
                                 }
                                 else{
