@@ -29,4 +29,61 @@
         android:text="@string/bookAppt"
         android:gravity="center"/>
 
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/rGrp">
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="09:00 A.M - 9:30 A.M"
+            android:id="@+id/rBtn1"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="09:30 A.M - 10:00 A.M"
+            android:id="@+id/rBtn2"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10:00 A.M - 10:30 A.M"
+            android:id="@+id/rBtn3"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="10:30 A.M - 11:00 A.M"
+            android:id="@+id/rBtn4"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="11:00 A.M - 11:30 A.M"
+            android:id="@+id/rBtn5"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="11:30 A.M - 12:00 A.M"
+            android:id="@+id/rBtn6"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12:00 P.M - 12:30 P.M"
+            android:id="@+id/rBtn7"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="12:30 P.M - 01:00 P.M"
+            android:id="@+id/rBtn8"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="01:00 P.M - 01:30 P.M"
+            android:id="@+id/rBtn9"/>
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="01:30 P.M - 02:00 P.M"
+            android:id="@+id/rBtn10"/>
+    </RadioGroup>
+
 </LinearLayout>

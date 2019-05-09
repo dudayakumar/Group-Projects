@@ -130,9 +130,10 @@ public class AppointmentActionsActivity extends AppCompatActivity {
             public void onClick(View v) {
 //                NavigationView nv = (NavigationView)findViewById(R.id.nav_view);
 
-                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
-                startActivity(intent); //working
+//                Intent intent = new Intent(getApplicationContext(), DashboardActivity.class);
+//                startActivity(intent); //working
 
+//                navigateToFragment();
 
 //                getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
 //                nv.getMenu().getItem(0).setChecked(true);
@@ -144,6 +145,12 @@ public class AppointmentActionsActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void navigateToFragment() {
+        Log.d("AppointmentActions","*****Entered navigateToFragment()");
+        Intent intent = new Intent(getApplicationContext(), BookApppointmentFragment.class);
+        startActivity(intent);
     }
 
 

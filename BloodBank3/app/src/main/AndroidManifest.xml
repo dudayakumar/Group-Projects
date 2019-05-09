@@ -23,19 +23,24 @@
 
         <activity
             android:name=".activities.LoginActivity"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.DashboardActivity"
-            android:label="Dashboard" />
+            android:label="Dashboard"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.ProfileActivity"
-            android:label="Registration" />
+            android:label="Registration"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.RestorePassword"
-            android:label="Reset Password" />
+            android:label="Reset Password"
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".activities.AppointmentActionsActivity"
-            android:label="Appointment Actions" />
+            android:label="Appointment Actions"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

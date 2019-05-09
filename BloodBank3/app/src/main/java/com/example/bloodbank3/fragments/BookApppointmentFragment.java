@@ -3,18 +3,24 @@ package com.example.bloodbank3.fragments;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -24,10 +30,16 @@ import com.example.bloodbank3.activities.LoginActivity;
 import com.example.bloodbank3.models.AppointmentData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 /***
  Class Name: BookApppointmentFragment
@@ -43,11 +55,18 @@ public class BookApppointmentFragment extends Fragment {
     private DatePickerDialog datePicker;
     private TimePickerDialog timePicker;
     private Button appointmentBookBtn;
+    private RadioGroup radioGroup;
+    private RadioButton radioButton;
 
     private DatabaseReference db_ref;
+    private DatabaseReference db_ref2;
     private FirebaseAuth mAuth;
     private FirebaseDatabase fdb;
 
+    private List<String> timeSlotList;
+
+
+    RadioButton radioButton1,radioButton2,radioButton3,radioButton4,radioButton5,radioButton6,radioButton7,radioButton8,radioButton9,radioButton10;
     String uid,uemail;
 
     @Nullable
@@ -58,11 +77,27 @@ public class BookApppointmentFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         fdb = FirebaseDatabase.getInstance();
         db_ref = fdb.getReference("appointments");
+        db_ref2 = FirebaseDatabase.getInstance().getReference();
 
         appointmentDate = view.findViewById(R.id.appointment_date);
         appointmentTime = view.findViewById(R.id.appointment_time);
         appointmentBookBtn = view.findViewById(R.id.schedule_appointment);
+        radioGroup = view.findViewById(R.id.rGrp);
+        appointmentTime.setEnabled(false);
+        radioGroup.setVisibility(View.GONE);
 
+        radioButton1 = view.findViewById(R.id.rBtn1);
+        radioButton2 = view.findViewById(R.id.rBtn2);
+        radioButton3 = view.findViewById(R.id.rBtn3);
+        radioButton4 = view.findViewById(R.id.rBtn4);
+        radioButton5 = view.findViewById(R.id.rBtn5);
+        radioButton6 = view.findViewById(R.id.rBtn6);
+        radioButton7 = view.findViewById(R.id.rBtn7);
+        radioButton8 = view.findViewById(R.id.rBtn8);
+        radioButton9 = view.findViewById(R.id.rBtn9);
+        radioButton10 = view.findViewById(R.id.rBtn10);
+
+        //Logic to show date picker dialogue
         appointmentDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,26 +110,42 @@ public class BookApppointmentFragment extends Fragment {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
                         appointmentDate.setText(day + "/" + (month + 1) + "/" + year);
+
+                        //Logic to render time slots according to availability
+                        if(!appointmentDate.getText().toString().isEmpty()){
+                            radioGroup.setVisibility(View.VISIBLE);
+
+                            timeSlotList = new ArrayList<>();
+                            radioGroup.clearCheck();
+                            for(int i = 0 ; i<radioGroup.getChildCount(); i++){
+                                radioGroup.getChildAt(i).setEnabled(true);
+                            }
+
+                            Query allAppts = db_ref2.child("appointments");
+                            allAppts.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
+                                            AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
+                                            if(appointmentDate.getText().toString().equals(appointmentData.getDate())){
+                                                timeSlotList.add(appointmentData.getTime());
+                                            }
+                                        }
+                                        Log.d("BookAppointment: ", "*****timeSlotList: "+timeSlotList);
+                                        enableTimeSlot(timeSlotList);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
                     }
                 },year,month,day);
                 datePicker.show();
-            }
-        });
-
-        appointmentTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar cal = Calendar.getInstance();
-                int hour = cal.get(Calendar.HOUR_OF_DAY);
-                int minute = cal.get(Calendar.MINUTE);
-
-                timePicker = new TimePickerDialog(view.getContext(),new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        appointmentTime.setText(hourOfDay+":"+minute);
-                    }
-                },hour,minute,true);
-                timePicker.show();
             }
         });
 
@@ -112,6 +163,7 @@ public class BookApppointmentFragment extends Fragment {
             Log.d("BookAppointment: ", "*****User email: "+uemail);
         }
 
+        //Logic to store appointment details in database
         appointmentBookBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,6 +199,82 @@ public class BookApppointmentFragment extends Fragment {
             }
         });
 
+        //Logic to set time edit texxt with value of the radio button
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId){
+                    case R.id.rBtn1:
+                        appointmentTime.setText(radioButton1.getText());
+                        break;
+                    case R.id.rBtn2:
+                        appointmentTime.setText(radioButton2.getText());
+                        break;
+                    case R.id.rBtn3:
+                        appointmentTime.setText(radioButton3.getText());
+                        break;
+                    case R.id.rBtn4:
+                        appointmentTime.setText(radioButton4.getText());
+                        break;
+                    case R.id.rBtn5:
+                        appointmentTime.setText(radioButton5.getText());
+                        break;
+                    case R.id.rBtn6:
+                        appointmentTime.setText(radioButton6.getText());
+                        break;
+                    case R.id.rBtn7:
+                        appointmentTime.setText(radioButton7.getText());
+                        break;
+                    case R.id.rBtn8:
+                        appointmentTime.setText(radioButton8.getText());
+                        break;
+                    case R.id.rBtn9:
+                        appointmentTime.setText(radioButton9.getText());
+                        break;
+                    case R.id.rBtn10:
+                        appointmentTime.setText(radioButton10.getText());
+                        break;
+                }
+            }
+        });
+
         return view;
+    }
+
+    //Logic to enable/disable timeslots based on availability
+    private void enableTimeSlot(List<String> timeSlotList) {
+
+        for (String timeSlot: timeSlotList){
+            if(timeSlot.equals(radioButton1.getText().toString())){
+                radioButton1.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton2.getText().toString())){
+                radioButton2.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton3.getText().toString())){
+                radioButton3.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton4.getText().toString())){
+                radioButton4.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton5.getText().toString())){
+                radioButton5.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton6.getText().toString())){
+                radioButton6.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton7.getText().toString())){
+                radioButton7.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton8.getText().toString())){
+                radioButton8.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton9.getText().toString())){
+                radioButton9.setEnabled(false);
+            }
+            if(timeSlot.equals(radioButton10.getText().toString())){
+                radioButton10.setEnabled(false);
+            }
+        }
     }
 }
