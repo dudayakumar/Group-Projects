@@ -52,6 +52,7 @@ public class HomeFragment extends Fragment{
     private FirebaseAuth mAuth;
     private AppointmentDataAdapter appointmentDataAdapter;
     private List<AppointmentData> appointmentDataList;
+    private List<AppointmentData> allAppointmentDataList;
     private ProgressDialog pd;
     private CardView card;
 
@@ -67,6 +68,7 @@ public class HomeFragment extends Fragment{
 
         db_ref = FirebaseDatabase.getInstance().getReference();
         appointmentDataList = new ArrayList<>();
+        allAppointmentDataList = new ArrayList<>();
 
         pd = new ProgressDialog(getActivity());
         pd.setMessage("Loading...");
@@ -75,6 +77,13 @@ public class HomeFragment extends Fragment{
 
         mAuth = FirebaseAuth.getInstance();
         getActivity().setTitle("Home");
+
+//        Bundle bundle = this.getArguments();
+//        if(bundle != null){
+//            String username = bundle.getString("username");
+//        }
+
+
 
         appointmentDataAdapter = new AppointmentDataAdapter(appointmentDataList);
         RecyclerView.LayoutManager apptLayout = new LinearLayoutManager(getContext());
@@ -111,7 +120,10 @@ public class HomeFragment extends Fragment{
                             appointmentDataList.add(appointmentData);
                             appointmentDataAdapter.notifyDataSetChanged();
                         }
+                        allAppointmentDataList.add(appointmentData);
                     }
+                    allAppointmentDataList.size();
+                    Log.d("HomeFragment", "*****allAppointmentDataList.size(): "+allAppointmentDataList.size());
                     pd.dismiss();
                 } else {
                     Toast.makeText(getActivity(), "Database is empty now!", Toast.LENGTH_LONG).show();

@@ -10,7 +10,7 @@
     <string name="sign_up">Create an account</string>
     <string name="register">Register</string>
     <string name="forgot_password">Forgot password?</string>
-    <string name="reset">Reset</string>
+    <string name="reset">Reset Password</string>
 
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

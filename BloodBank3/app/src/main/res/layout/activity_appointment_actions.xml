@@ -4,24 +4,31 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_appointment_actions">
+    android:id="@+id/activity_appointment_actions"
+    android:gravity="center"
+    android:background="@drawable/blood_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/innerLinearLayout"
         android:clickable="true"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointment_id"/>
+            android:id="@+id/appointment_id"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_id"/>
+            android:id="@+id/user_id"
+            android:textSize="25sp"
+            android:textStyle="bold"/>
 
         <TextView
             android:layout_width="match_parent"
@@ -45,12 +52,17 @@
         android:layout_height="wrap_content"
         android:id="@+id/statusBtn"
         android:text="Update Status"
-        android:onClick="updateStatus"/>
+        android:onClick="updateStatus"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"/>
 
     <Button
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/rescheduleBtn"
-        android:text="Reschedule Appointment"/>
+        android:text="Reschedule Appointment"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"/>
 
 </LinearLayout>

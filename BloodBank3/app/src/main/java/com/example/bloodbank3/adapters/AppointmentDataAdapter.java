@@ -16,6 +16,13 @@ import com.example.bloodbank3.R;
 import com.example.bloodbank3.activities.AppointmentActionsActivity;
 import com.example.bloodbank3.fragments.HomeFragment;
 import com.example.bloodbank3.models.AppointmentData;
+import com.example.bloodbank3.models.UserData;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import org.w3c.dom.Text;
 
@@ -30,6 +37,8 @@ import java.util.List;
 public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentDataAdapter.AppointmentHolder> implements View.OnClickListener{
 
     Context context;
+    private DatabaseReference db_ref = FirebaseDatabase.getInstance().getReference();
+
 
     @Override
     public void onClick(View v) {
@@ -76,7 +85,6 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             @Override
             public void onClick(View v) {
                 Log.d("AppointmentDataAdapter","***** onClick");
-                Toast.makeText(v.getContext(),"Clicked item2", Toast.LENGTH_SHORT).show();
 
                 //Calling method in home fragment class for navigation
                 TextView userid = v.findViewById(R.id.userid);
@@ -84,10 +92,6 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
                 TextView apptTime = v.findViewById(R.id.appointmenttime);
                 TextView apptId = v.findViewById(R.id.appointmentid);
                 TextView status = v.findViewById(R.id.appointmentstatus);
-
-
-                Log.d("AppointmentDataAdapter","*****apptId: "+apptId.getText().toString());
-                Log.d("AppointmentDataAdapter","*****apptDate: "+apptDate.getText().toString());
 
                 HomeFragment homeFragment = new HomeFragment();
                 homeFragment.navigateToApptFragment(viewGroup.getContext(),userid.getText()+"",apptDate.getText()+"",apptTime.getText()+"",apptId.getText()+"",status.getText()+"");
@@ -105,23 +109,13 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
     public void onBindViewHolder(@NonNull AppointmentHolder appointmentHolder, int i) {
 
         Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder "+i);
-        AppointmentData appointmentData = apptLists.get(i);
+        final AppointmentData appointmentData = apptLists.get(i);
+
         appointmentHolder.appointmentId.setText(appointmentData.getAppointmentId());
-        appointmentHolder.userId.setText(appointmentData.getUserId());
+        appointmentHolder.userId.setText(appointmentData.getUserName());
         appointmentHolder.apptDate.setText(appointmentData.getDate());
         appointmentHolder.apptTime.setText(appointmentData.getTime());
         appointmentHolder.appointmentStatus.setText(appointmentData.getAppointmentStatus());
-
-        Log.d("AppointmentDataAdapter","*****User Id = "+appointmentData.getUserId());
-      //  Log.d("AppointmentDataAdapter","*****Date = "+appointmentData.getDate());
-       // Log.d("AppointmentDataAdapter","*****Time = "+appointmentData.getTime());
-        //Log.d("AppointmentDataAdapter","*****Appt Status = "+appointmentData.getAppointmentStatus());
-
-//        appointmentHolder.bind(apptLists.get(i), listener);
-
-
-
-
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
@@ -131,7 +125,6 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
 
     @Override
     public int getItemCount() {
-       // Log.d("AppointmentDataAdapter","*****apptLists.size() = "+apptLists.size());
         return apptLists.size();
     }
 }

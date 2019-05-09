@@ -3,7 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/blood_bg">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -36,7 +37,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:textStyle="bold"
-            android:text="@string/sign_in" />
+            android:text="@string/sign_in"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
         <Button
             android:textAllCaps="false"
@@ -45,15 +48,20 @@
             android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/register" />
+            android:text="@string/register"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
         <Button
+            android:layout_marginTop="20dp"
             android:textAllCaps="false"
             android:id="@+id/button_forgot_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="2dp"
-            android:text="@string/forgot_password" />
+            android:text="@string/forgot_password"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
 

@@ -6,7 +6,8 @@
     android:fillViewport="true"
     android:scrollbarStyle="outsideOverlay"
     android:orientation="vertical"
-    tools:context=".activities.ProfileActivity">
+    tools:context=".activities.ProfileActivity"
+    android:background="@drawable/blood_bg">
 
     <LinearLayout
         android:padding="10dp"
@@ -195,7 +196,8 @@
             android:layout_marginBottom="40dp"
             android:text="@string/sign_up"
             android:textAllCaps="false"
-            android:textColor="@color/colorPrimary" />
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
 

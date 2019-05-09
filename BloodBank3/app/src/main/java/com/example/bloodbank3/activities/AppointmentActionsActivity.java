@@ -68,12 +68,20 @@ public class AppointmentActionsActivity extends AppCompatActivity {
         rescheduleBtn = findViewById(R.id.rescheduleBtn);
         userId = findViewById(R.id.user_id);
         builder = new AlertDialog.Builder(this);
+        mAuth = FirebaseAuth.getInstance();
 
         appointmentDate.setText(apptDate);
         appointmentTime.setText(apptTime);
         appointmentId.setText(apptId);
         appointmentStatus.setText(status);
         userId.setText(userid);
+
+        if(mAuth.getCurrentUser().getEmail().equals("admin@gmail.com")){
+            rescheduleBtn.setVisibility(View.GONE);
+        }
+        if(!mAuth.getCurrentUser().getEmail().equals("admin@gmail.com")){
+            statusBtn.setVisibility(View.GONE);
+        }
 
         Log.d("AppointmentActions","*************apptId: "+apptId);
         Log.d("AppointmentActions","*************appointmentId: "+appointmentId.getText().toString());

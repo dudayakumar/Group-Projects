@@ -16,7 +16,9 @@
         android:layout_height="wrap_content"
         android:text="@string/find_donor"
         android:gravity="center_horizontal"
-        android:id="@+id/find_donorBtn"/>
+        android:id="@+id/find_donorBtn"
+        android:background="@color/colorPrimary"
+        android:textColor="@color/colorWhite"/>
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/donor_location"

@@ -21,6 +21,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.example.bloodbank3.R;
 import com.example.bloodbank3.activities.DashboardActivity;
 import com.example.bloodbank3.activities.LoginActivity;
 import com.example.bloodbank3.models.AppointmentData;
+import com.example.bloodbank3.models.UserData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -50,6 +52,7 @@ import java.util.List;
 public class BookApppointmentFragment extends Fragment {
 
     private View view;
+    private TextView userName;
     private EditText appointmentDate;
     private EditText appointmentTime;
     private DatePickerDialog datePicker;
@@ -64,7 +67,7 @@ public class BookApppointmentFragment extends Fragment {
     private FirebaseDatabase fdb;
 
     private List<String> timeSlotList;
-
+    private List<AppointmentData> allAppointmentDataList;
 
     RadioButton radioButton1,radioButton2,radioButton3,radioButton4,radioButton5,radioButton6,radioButton7,radioButton8,radioButton9,radioButton10;
     String uid,uemail;
@@ -79,12 +82,15 @@ public class BookApppointmentFragment extends Fragment {
         db_ref = fdb.getReference("appointments");
         db_ref2 = FirebaseDatabase.getInstance().getReference();
 
+        userName = view.findViewById(R.id.userName);
         appointmentDate = view.findViewById(R.id.appointment_date);
         appointmentTime = view.findViewById(R.id.appointment_time);
         appointmentBookBtn = view.findViewById(R.id.schedule_appointment);
         radioGroup = view.findViewById(R.id.rGrp);
         appointmentTime.setEnabled(false);
         radioGroup.setVisibility(View.GONE);
+
+        allAppointmentDataList = new ArrayList<>();
 
         radioButton1 = view.findViewById(R.id.rBtn1);
         radioButton2 = view.findViewById(R.id.rBtn2);
@@ -96,6 +102,29 @@ public class BookApppointmentFragment extends Fragment {
         radioButton8 = view.findViewById(R.id.rBtn8);
         radioButton9 = view.findViewById(R.id.rBtn9);
         radioButton10 = view.findViewById(R.id.rBtn10);
+
+
+        Query allUsers = db_ref2.child("users");
+        allUsers.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String username = null;
+                if(dataSnapshot.exists()) {
+                    for (DataSnapshot singleUser : dataSnapshot.getChildren()) {
+                        UserData userData = singleUser.getValue(UserData.class);
+                        Log.d("BookAppointment: ", "*****singleUser.child(Name).getValue: "+singleUser.child("Name").getValue());
+                        if(mAuth.getCurrentUser().getEmail().equals(userData.getEmail())){
+                            userName.setText(userData.getName());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
         //Logic to show date picker dialogue
         appointmentDate.setOnClickListener(new View.OnClickListener() {
@@ -131,7 +160,10 @@ public class BookApppointmentFragment extends Fragment {
                                             if(appointmentDate.getText().toString().equals(appointmentData.getDate())){
                                                 timeSlotList.add(appointmentData.getTime());
                                             }
+                                            allAppointmentDataList.add(appointmentData);
                                         }
+                                        allAppointmentDataList.size();
+                                        Log.d("BookAppointment", "*****allAppointmentDataList.size(): "+allAppointmentDataList.size());
                                         Log.d("BookAppointment: ", "*****timeSlotList: "+timeSlotList);
                                         enableTimeSlot(timeSlotList);
                                     }
@@ -184,17 +216,19 @@ public class BookApppointmentFragment extends Fragment {
                 else {
                     AppointmentData appointmentData = new AppointmentData();
 
+                    String key = "APPT"+String.valueOf(allAppointmentDataList.size()+1);
                     appointmentData.setUserId(uid);
                     appointmentData.setDate(ApptDate);
                     appointmentData.setTime(ApptTime);
                     appointmentData.setAppointmentStatus("Pending");
-                    DatabaseReference newRef = db_ref.push();
-                    String key = newRef.getKey();
-                    Log.d("BookAppointment: ", "*****key: "+key);
                     appointmentData.setAppointmentId(key);
-                    newRef.setValue(appointmentData);
+                    appointmentData.setUserName(userName.getText().toString());
+
+                    db_ref.child(key).setValue(appointmentData);
+
                     Toast.makeText(view.getContext(), "Appointment has been booked successfully!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(view.getContext(), DashboardActivity.class));
+
                 }
             }
         });
