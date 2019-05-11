@@ -23,7 +23,6 @@ public class AboutUsFragment extends Fragment {
         View view = inflater.inflate(R.layout.aboutus, container, false);
         getActivity().setTitle("About Us");
 
-        textView = view.findViewById(R.id.aboutUsText);
         return view;
     }
 }

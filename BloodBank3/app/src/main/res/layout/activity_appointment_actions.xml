@@ -1,68 +1,217 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_appointment_actions"
-    android:gravity="center"
-    android:background="@drawable/blood_bg">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:fillViewport="true"
+    android:scrollbarStyle="outsideOverlay"
+    android:orientation="vertical"
+    tools:context=".activities.ProfileActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/innerLinearLayout"
-        android:clickable="true"
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        android:layout_gravity="center">
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/activity_appointment_actions"
+        android:gravity="center"
+        android:scrollbars="vertical">
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointment_id"
-            android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:id="@+id/innerLinearLayout"
+            android:clickable="true"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-        <TextView
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Appointment details: "
+                android:textStyle="bold"
+                android:textSize="15pt"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/appointment_id"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/user_id"
+                android:textSize="10pt"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10pt"
+                android:id="@+id/appointment_date"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10pt"
+                android:id="@+id/appointment_time"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="10pt"
+                android:id="@+id/appointment_status"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/admindisplay"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Donor's responses:"
+                android:textStyle="bold"
+                android:textSize="15pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques1"
+                android:text="@string/question1"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer1"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques2"
+                android:text="@string/question2"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer2"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques3"
+                android:text="@string/question3"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer3"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques4"
+                android:text="@string/question4"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer4"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques5"
+                android:text="@string/question5"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer5"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques6"
+                android:text="@string/question6"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer6"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques7"
+                android:text="@string/question7"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer7"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/ques8"
+                android:text="@string/question8"
+                android:textSize="10pt"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/answer8"
+                android:textSize="10pt"
+                android:paddingLeft="30dp"/>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/user_id"
-            android:textSize="25sp"
-            android:textStyle="bold"/>
+            android:id="@+id/rescheduleBtn"
+            android:text="Reschedule Appointment"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
-        <TextView
+        <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/appointment_date"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/appointment_time"/>
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/appointment_status"/>
+            android:id="@+id/statusBtn"
+            android:text="Update Status"
+            android:background="@color/colorPrimary"
+            android:textColor="@color/colorWhite"/>
 
     </LinearLayout>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/statusBtn"
-        android:text="Update Status"
-        android:onClick="updateStatus"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"/>
-
-    <Button
-        android:layout_marginTop="20dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rescheduleBtn"
-        android:text="Reschedule Appointment"
-        android:background="@color/colorPrimary"
-        android:textColor="@color/colorWhite"/>
-
-</LinearLayout>
+</ScrollView>

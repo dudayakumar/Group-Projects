@@ -56,6 +56,8 @@ public class HomeFragment extends Fragment{
     private ProgressDialog pd;
     private CardView card;
 
+    String user_id;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -121,6 +123,10 @@ public class HomeFragment extends Fragment{
                             appointmentDataAdapter.notifyDataSetChanged();
                         }
                         allAppointmentDataList.add(appointmentData);
+                        Log.d("HomeFragment","*****appointmentData.getUserId(): "+appointmentData.getUserId());
+                        user_id = appointmentData.getUserId();
+                        Log.d("HomeFragment","*****user_id inside datasnapshot : "+user_id);
+
                     }
                     allAppointmentDataList.size();
                     Log.d("HomeFragment", "*****allAppointmentDataList.size(): "+allAppointmentDataList.size());
@@ -138,16 +144,18 @@ public class HomeFragment extends Fragment{
         });
     }
 
-    public void navigateToApptFragment(Context ctx,String userid,String apptDate,String apptTime,String apptId,String status){
+    public void navigateToApptFragment(Context ctx,String username,String apptDate,String apptTime,String apptId,String status, String donor_id){
         //Navigation to activity
         Activity activity = (Activity)ctx;
         Intent intent = new Intent(ctx, AppointmentActionsActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("userid",userid);
+        bundle.putString("username",username);
         bundle.putString("appointmentDate",apptDate);
         bundle.putString("appointmentTime",apptTime);
         bundle.putString("appointmentId",apptId);
         bundle.putString("appointmentStatus",status);
+        bundle.putString("user_id",donor_id);
+        Log.d("HomeFragment","*****user_id inside navigateToApptFragment : "+donor_id);
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }

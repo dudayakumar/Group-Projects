@@ -30,6 +30,20 @@
     <string name="appointment_date">Appointment Date</string>
     <string name="appointment_time">Appointment Time</string>
 
+    <string name="question1">1. Currently taking any antibiotic?</string>
+    <string name="question2">2. Suffering from any disease/illness?</string>
+    <string name="question3">3. Did you donate blood in last 3 months?</string>
+    <string name="question4">4. Had any vaccinations or other shots?</string>
+    <string name="question5">5. Had a tatoo?</string>
+    <string name="question6">6. Had a transplant such as organ,tissue or bone marrow?</string>
+    <string name="question7">7. Did you undergo any major surgeries within last 6 months?</string>
+    <string name="question8">8. Did blood transfusion within last 6 months?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
+
+
     <array name="gender">
         <item>Male</item>
         <item>Female</item>

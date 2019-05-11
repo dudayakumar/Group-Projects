@@ -41,6 +41,10 @@
             android:name=".activities.AppointmentActionsActivity"
             android:label="Appointment Actions"
             android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".activities.RescheduleAppointmentActivity"
+            android:label="Reschedule Appointment"
+            android:windowSoftInputMode="stateHidden"/>
         <activity android:name=".activities.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

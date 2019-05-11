@@ -14,7 +14,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <!-- The main content view where fragments are loaded -->
         <FrameLayout
             android:id="@+id/flContent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"

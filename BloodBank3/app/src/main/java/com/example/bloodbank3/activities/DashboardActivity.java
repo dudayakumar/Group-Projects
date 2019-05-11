@@ -18,6 +18,7 @@ import com.example.bloodbank3.fragments.ContactUsFragment;
 import com.example.bloodbank3.fragments.FindDonorFragment;
 import com.example.bloodbank3.fragments.HomeFragment;
 import com.example.bloodbank3.fragments.ProfileFragment;
+import com.example.bloodbank3.fragments.QuestionnaireFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.FirebaseDatabase;
@@ -64,6 +65,7 @@ public class DashboardActivity extends AppCompatActivity{
             nv.getMenu().findItem(R.id.bookAppt).setVisible(false);
             nv.getMenu().findItem(R.id.aboutUs).setVisible(false);
             nv.getMenu().findItem(R.id.contactUs).setVisible(false);
+            nv.getMenu().findItem(R.id.questionnaire).setVisible(false);
         }
 
         //If logged-in user is a donor
@@ -91,12 +93,15 @@ public class DashboardActivity extends AppCompatActivity{
                         break;
                     case R.id.userprofile:
                         Log.d("DashBoardActivity","*****Navigating to user profile");
-//                        startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                         getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new ProfileFragment()).commit();
                         break;
                     case R.id.bookAppt:
                         Log.d("DashBoardActivity","*****Navigating to book an appointment");
                         getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new BookApppointmentFragment()).commit();
+                        break;
+                    case R.id.questionnaire:
+                        Log.d("DashBoardActivity","*****Navigating to questionnaire");
+                        getSupportFragmentManager().beginTransaction().replace(R.id.flContent, new QuestionnaireFragment()).commit();
                         break;
                     case R.id.find_donor:
                         Log.d("DashBoardActivity","*****Navigating to find donors");

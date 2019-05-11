@@ -179,8 +179,6 @@ public class FindDonorFragment extends Fragment{
                                     map.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
                                         @Override
                                         public boolean onMarkerClick(Marker marker) {
-                                            Toast.makeText(getContext(), "Clicked marker!", Toast.LENGTH_LONG).show();
-
                                             //Fetching selected user's contact number through snippet
                                             final String contact = marker.getSnippet();
                                             builder = new AlertDialog.Builder(getContext());

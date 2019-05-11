@@ -11,6 +11,9 @@
         android:id="@+id/bookAppt"
         android:title="@string/bookAppt" />
     <item
+        android:id="@+id/questionnaire"
+        android:title="Fill Questionnaire"/>
+    <item
         android:id="@+id/find_donor"
         android:title="@string/find_donor" />
     <item

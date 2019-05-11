@@ -52,13 +52,15 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
 
     private List<AppointmentData> apptLists;
 
+    String donor_id;
+
     public AppointmentDataAdapter(List<AppointmentData> apptLists) {
         this.apptLists = apptLists;
     }
 
     public class AppointmentHolder extends RecyclerView.ViewHolder {
 
-    private TextView apptDate, apptTime, userId, appointmentId, appointmentStatus;
+    private TextView apptDate, apptTime, userId, appointmentId, appointmentStatus, donorId;
 
         public AppointmentHolder(@NonNull  View itemView) {
             super(itemView);
@@ -68,6 +70,7 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
             apptDate = itemView.findViewById(R.id.appointmentdate);
             apptTime = itemView.findViewById(R.id.appointmenttime);
             appointmentStatus = itemView.findViewById(R.id.appointmentstatus);
+            donorId = itemView.findViewById(R.id.donorid);
         }
     }
 
@@ -92,9 +95,12 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
                 TextView apptTime = v.findViewById(R.id.appointmenttime);
                 TextView apptId = v.findViewById(R.id.appointmentid);
                 TextView status = v.findViewById(R.id.appointmentstatus);
+                TextView donorid = v.findViewById(R.id.donorid);
+
+                Log.d("AppointmentDataAdapter","*****Inside onCreateViewHolder donor_id : "+donorid);
 
                 HomeFragment homeFragment = new HomeFragment();
-                homeFragment.navigateToApptFragment(viewGroup.getContext(),userid.getText()+"",apptDate.getText()+"",apptTime.getText()+"",apptId.getText()+"",status.getText()+"");
+                homeFragment.navigateToApptFragment(viewGroup.getContext(),userid.getText()+"",apptDate.getText()+"",apptTime.getText()+"",apptId.getText()+"",status.getText()+"", donorid.getText()+"");
 
             }
 
@@ -111,11 +117,14 @@ public class AppointmentDataAdapter extends RecyclerView.Adapter<AppointmentData
         Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder "+i);
         final AppointmentData appointmentData = apptLists.get(i);
 
+        donor_id = appointmentData.getUserId();
+        Log.d("AppointmentDataAdapter","*****Inside onBindViewHolder donor_id : "+donor_id);
         appointmentHolder.appointmentId.setText(appointmentData.getAppointmentId());
         appointmentHolder.userId.setText(appointmentData.getUserName());
         appointmentHolder.apptDate.setText(appointmentData.getDate());
         appointmentHolder.apptTime.setText(appointmentData.getTime());
         appointmentHolder.appointmentStatus.setText(appointmentData.getAppointmentStatus());
+        appointmentHolder.donorId.setText(appointmentData.getUserId());
     }
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {

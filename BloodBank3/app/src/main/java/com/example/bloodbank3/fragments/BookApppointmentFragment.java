@@ -39,8 +39,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /***
@@ -56,10 +61,8 @@ public class BookApppointmentFragment extends Fragment {
     private EditText appointmentDate;
     private EditText appointmentTime;
     private DatePickerDialog datePicker;
-    private TimePickerDialog timePicker;
     private Button appointmentBookBtn;
     private RadioGroup radioGroup;
-    private RadioButton radioButton;
 
     private DatabaseReference db_ref;
     private DatabaseReference db_ref2;
@@ -75,6 +78,7 @@ public class BookApppointmentFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         view = inflater.inflate(R.layout.activity_book_appointment, container, false);
 
         mAuth = FirebaseAuth.getInstance();
@@ -126,6 +130,7 @@ public class BookApppointmentFragment extends Fragment {
             }
         });
 
+
         //Logic to show date picker dialogue
         appointmentDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,47 +143,74 @@ public class BookApppointmentFragment extends Fragment {
                 datePicker = new DatePickerDialog(view.getContext(),new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int day) {
-                        appointmentDate.setText(day + "/" + (month + 1) + "/" + year);
 
-                        //Logic to render time slots according to availability
-                        if(!appointmentDate.getText().toString().isEmpty()){
-                            radioGroup.setVisibility(View.VISIBLE);
+                        //Validating to disallow user from selecting past dates
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        String date = sdf.format(cal.getTime());
 
-                            timeSlotList = new ArrayList<>();
-                            radioGroup.clearCheck();
-                            for(int i = 0 ; i<radioGroup.getChildCount(); i++){
-                                radioGroup.getChildAt(i).setEnabled(true);
+                        String datePicked = day + "/" + (month + 1) + "/" + year;
+                        Date date1 = null ,date2 = null;
+
+                        try {
+                            date1 = new SimpleDateFormat("dd/MM/yyyy").parse(date);
+                            date2 = new SimpleDateFormat("dd/MM/yyyy").parse(datePicked);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+
+                        if(date2.after(date1)) {
+                            appointmentDate.setText(day + "/" + (month + 1) + "/" + year);
+
+                            //Logic to render time slots according to availability
+                            if(!appointmentDate.getText().toString().isEmpty()){
+                                radioGroup.setVisibility(View.VISIBLE);
+
+                                timeSlotList = new ArrayList<>();
+                                radioGroup.clearCheck();
+                                for(int i = 0 ; i<radioGroup.getChildCount(); i++){
+                                    radioGroup.getChildAt(i).setEnabled(true);
+                                }
+
+                                Query allAppts = db_ref2.child("appointments");
+                                allAppts.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.exists()){
+                                            AppointmentData appointmentData = null;
+                                            for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
+                                                appointmentData = singleAppt.getValue(AppointmentData.class);
+                                                if(appointmentDate.getText().toString().equals(appointmentData.getDate())){
+                                                    timeSlotList.add(appointmentData.getTime());
+                                                }
+                                                allAppointmentDataList.add(appointmentData);
+                                            }
+                                            allAppointmentDataList.size();
+                                            Log.d("BookAppointment", "*****allAppointmentDataList.size(): "+allAppointmentDataList.size());
+                                            Log.d("BookAppointment: ", "*****timeSlotList: "+timeSlotList);
+
+                                            if(!appointmentData.getAppointmentStatus().equals("Rejected")) {
+                                                enableTimeSlot(timeSlotList);
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                    }
+                                });
                             }
 
-                            Query allAppts = db_ref2.child("appointments");
-                            allAppts.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.exists()){
-                                        for (DataSnapshot singleAppt: dataSnapshot.getChildren()){
-                                            AppointmentData appointmentData = singleAppt.getValue(AppointmentData.class);
-                                            if(appointmentDate.getText().toString().equals(appointmentData.getDate())){
-                                                timeSlotList.add(appointmentData.getTime());
-                                            }
-                                            allAppointmentDataList.add(appointmentData);
-                                        }
-                                        allAppointmentDataList.size();
-                                        Log.d("BookAppointment", "*****allAppointmentDataList.size(): "+allAppointmentDataList.size());
-                                        Log.d("BookAppointment: ", "*****timeSlotList: "+timeSlotList);
-                                        enableTimeSlot(timeSlotList);
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                                }
-                            });
                         }
+                        else{
+                            Toast.makeText(view.getContext(), "Please pick a date in the future", Toast.LENGTH_LONG).show();
+                        }
+
                     }
                 },year,month,day);
                 datePicker.show();
             }
+
         });
 
         //Fetching currently logged in user
