@@ -32,7 +32,7 @@ public class ContactUsFragment extends Fragment {
                              Bundle savedInstanceState) {
 // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.contactus, container, false);
-
+        getActivity().setTitle("Contact Us");
         SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override

@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.bloodbank3.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -81,6 +82,8 @@ public class QuestionnaireFragment extends Fragment {
         submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Toast.makeText(view.getContext(), "Your responses have been recorded!", Toast.LENGTH_LONG).show();
+
                 if(que1yes.isChecked())
                     db_ref.child("questionnaire").child(mAuth.getCurrentUser().getUid()).child("ans1").setValue(que1yes.getText().toString());
                 else

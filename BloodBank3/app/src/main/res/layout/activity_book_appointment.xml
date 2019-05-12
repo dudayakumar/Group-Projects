@@ -31,7 +31,7 @@
         android:textColor="@color/colorPrimaryDark"/>
 
     <Button
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/schedule_appointment"
         android:text="@string/bookAppt"

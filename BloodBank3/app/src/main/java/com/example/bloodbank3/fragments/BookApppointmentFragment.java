@@ -80,6 +80,7 @@ public class BookApppointmentFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view = inflater.inflate(R.layout.activity_book_appointment, container, false);
+        getActivity().setTitle("Book Appointment");
 
         mAuth = FirebaseAuth.getInstance();
         fdb = FirebaseDatabase.getInstance();

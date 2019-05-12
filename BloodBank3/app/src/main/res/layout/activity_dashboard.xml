@@ -6,8 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fitsSystemWindows="true"
     tools:openDrawer="start"
-    android:id="@+id/activity_dashboard"
-    android:background="@drawable/blood_bg">
+    android:id="@+id/activity_dashboard">
 
     <LinearLayout
         android:layout_width="match_parent"
